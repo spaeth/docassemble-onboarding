@@ -1,0 +1,33 @@
+metadata:
+  title: Text
+  documentation: "https://docassemble.org/docs/fields.html#fields"
+---
+question: |
+  Geben Sie den Code vom Arbeitgeber ein
+subquestion: |
+  Please be specific.
+fields:
+  - Code: key
+---
+objects:
+  r: DARedis
+---
+code: |
+  def get_url_from_code(code):
+    return r.get(code).decode('UTF-8')
+---
+code: |
+  if 'key' in url_args:
+    key = url_args['key']
+  else:
+    key
+  url_from_code = get_url_from_code(key)
+---
+question: Result of question
+subquestion: |
+  URL: ${ url_from_code } [BR]
+  Code: ${ key } [BR]
+  <a class="btn btn-primary" href="${ url_from_code }" role="button">Fragebogen ausfüllen</a>
+
+mandatory: True
+

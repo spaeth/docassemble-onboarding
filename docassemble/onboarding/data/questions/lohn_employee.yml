@@ -1,0 +1,216 @@
+---
+question: |
+  Persönliche Angaben
+subquestion: |
+  Bitte kontrolliere die vorausgefüllten Daten und beantworte die Fragen.
+fields:
+  - html: |
+      <h2>Minijob</h2>
+    show if:
+      code: |
+        contract_type == 'Minijob'
+  - Vorname: first_name
+  - Nachname: last_name
+  - Geburtsname: birth_name
+    required: False
+  - Geburtsdatum: birth_date
+    datatype: date 
+  - Straße: street
+  - Hausnr.: street_no
+  - Postleitzahl: zip
+  - Stadt: city
+  - "Haben Sie eine *deutsche* Sozialversicherungskarte?": is_insurance_number
+    datatype: yesnoradio
+    default: True
+  - Sozialversicherungsnummer: insurance_number
+    help: |
+      https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Allgemeine-Informationen/Sozialversicherungsausweis/sozialversicherungsausweis_node.html
+    validate: |
+      lambda y: True if len(y)==12 else validation_error("Es handelt sich um keine deutsche Sozialversicherungsnummer.")      
+    show if: is_insurance_number
+  - Geburtsort: birth_place
+    required: False
+    show if:
+      variable: is_insurance_number
+      is: False
+  - Geburtsland: birth_country
+    required: False
+    code: countries_list()
+    default: DE
+    hide if: is_insurance_number
+  - Geschlecht: gender
+    datatype: radio
+    choices:
+      #4003 GESCHLECHT NATÜRLICHE PERSON – NUMERISCH
+      - weiblich: 1
+      - männlich: 0
+      - divers: 2
+      - undefiniert: 3
+  - Staatsangehörigkeit: nationality
+    # 4214 Nationalitätenschlüssel Lohn
+    input type: combobox
+    code: myoptions
+  - IBAN: iban
+    default: DE1123913289
+  - Höchster Schulabschluss: graduation
+    choices: 
+      - ohne Schulabschluss
+      - Haupt-/Volksschulabschluss
+      - Mittlere Reife oder gleichwertiger Abschluss
+      - Abitur/ Fachabitur
+      - Abschluss unbekannt
+  - Höchste Berufsausbildung: training
+    choices:
+      - Ohne beruflichen Ausbildungsabschluss
+      - Abschluss einer anerkannten Berufsausbildung
+      - Meister/ Techniker oder gleichwertiger Fachschulabschluss
+      - Bachelor
+      - Master
+      - Diplom/ Magister/ Master/ Staatsexamen
+      - Promotion
+      - Abschluss unbekannt
+  - Steuer-Identifikationsnummer: tax_id
+    required: False
+  - Steuerklasse: tax_class
+    choices:
+    - I
+    - II
+    - III
+    - IV
+    - V
+    - VI
+    required: False
+  - Faktor: tax_factor
+    required: False
+  - Kinderfreibetrag: tax_child_allowance
+    required: False
+  - Konfession: tax_confession
+    choices:
+    - Römisch-Katholische Kirchensteuer: rk
+    - Evangelische Kirchensteuer: ev
+    - Evangelisch lutherische: lt
+    - Evangelisch reformiert: rf
+    - Altkatholische Kirchensteuer: ak
+    - Israelische/ Jüdische Kultussteuer: is
+    - Freireligiöse Landesgemeinde Baden: fb
+    - Israelitische Landesgemeinde Baden: ib
+    - Freireligiöse Gemeinde Offenbach/ Main: fo 
+    - Freireligiöse Landesgemeinde Pfalz: fp
+    - Freireligiöse Gemeinde Mainz: fm
+    - Jüdisch: jü
+    - Israelitische Religionsgemeinschaft Württembergs: iw
+    - Israelitische Kultussteuer Frankfurt: if
+    - Israelitische Kultussteuer Land: il
+    - Französisch reformiert: fr
+    - Freie Religionsgemeinschaft Alzey: fa
+    - Freireligiöse Landesgemeinschaft Pfalz: fg
+    - Freireligöse Gemeinde Offenbach/ Mainz: fs
+    - jüdische Kultussteuer (ih): ih
+    - jüdische Kultussteuer (jd): jd
+    default: rk
+    required: False
+  - KV: kv
+    choices:
+    - Kein Beitrag: 0
+    - Allgemeiner Beitrag: 1
+    - Ermäßigter Beitrag: 3
+    - Beitrag zur landwirtshcaftlichen KV: 4
+    - Arbeitgeberbeitrag zur landwirtschaftlichen KV: 5
+    - Pauschalbetrag für geringfügig Beschäftigte: 6
+    - Freiwillige KV, Firmenzahler: 9
+    default: 1
+    required: False
+    show if:
+      code: |
+        contract_type == 'Minijob'
+  - RV: rv
+    choices:
+    - kein Beitrag: 0
+    - Beitrag zur Rentenversicherung: 1
+    - "1/2 Beitrag zur Rentenversicherung": 3
+    - Geringfügig entlohnt: 5
+    default: 1
+    required: False
+  - AV: av
+    choices:
+    - Kein Beitrag zur BA: 0
+    - Voller Beitrag zur BA: 1
+    - Halber Beitrag zur BA: 2
+    default: 1
+    required: False
+    show if:
+      code: |
+        contract_type == 'Minijob'    
+  - PV: pv
+    choices:
+    - Kein Beitrag zur gesetzlichen PV: 0
+    - Voller Beitrag zur gesetzlichen PV: 1
+    - Halber Beitrag zur gesetzlichen PV: 2
+    default: 1
+    required: True
+    show if:
+      code: |
+        contract_type == 'Minijob'
+  - Name der Krankenversicherung: health_insurance
+    required: True
+  - Es liegt eine weitere Beschäftigung vor.: is_further_employment
+    datatype: yesno
+    
+back button: False
+continue button field: employee_personal_questionaire
+section: employee_questions
+css: |
+  <style>
+   .file-preview {display: none}
+  </style>
+---
+question: |
+  Unterlagen ${ is_insurance_number }
+fields:   
+  - Sozialversicherungsausweis: doc_soz_vers
+    datatype: camera
+    required: True
+    show if:
+      code: |
+        is_insurance_number == True
+  - VWL-Vertrag: doc_vwl
+    datatype: camera
+    required: True
+    show if:
+      code: |
+        is_vwl == False
+  - Schwerbehindertenausweis: doc_handicap
+    datatype: camera
+    required: True
+    show if:
+      code: |
+        is_handicap == False
+  #- Arbeitsvertrag: employment_contract
+  #  datatype: camera
+  #  required: False
+  - note: |
+     - SV-Ausweis: ${is_insurance_number}
+     - Schwerbehindertenausweis: ${ is_handicap }
+     - VWL-Vertrag: ${ is_vwl } 
+     - Arbeitsvertrag
+     - ? Bescheinigung über LSt-Abzug/ Anzahl der Beschäftigungstage bei Vorarbeitgebern
+     - Schul-/Studienbescheinigung
+     - del Antrag zur Befreiung von der RV-Pflicht
+     - del Bescheinigung der privaten Krankenversicherung 
+     - del Unterlagen Sozialkasse Bau/Maler     
+   
+css: |
+  <style>
+   .file-preview {display: none}
+  </style>    
+continue button field: employee_doc
+section: employee_documents
+---
+#need: 
+#  - occupation[-1].start
+question: ${ first_name } ${last_name} bestätigen Sie bitte durch Unterschrift die Richtigkeit der davor gemachten Angaben.
+signature: an_signature
+under: |
+  ${ first_name }   ${ last_name }
+required: False
+---

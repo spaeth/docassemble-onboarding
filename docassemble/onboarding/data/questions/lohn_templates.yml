@@ -1,0 +1,34 @@
+---
+attachment:
+  filename: ask_employee
+  name: ask_employee
+  variable name: ask_employee
+  valid formats:
+    - pdf  
+  docx template file: template_employee.docx
+---
+template: ag_email_template
+subject: |
+  Neueinstellung 
+content: |
+  ${ company }
+  ${ interview_url_action('second_step') }
+---
+attachment:
+  name: LODAS Import Datei für ${ first_name } ${ last_name }
+  filename: ${ first_name }_${ last_name }.txt
+  raw: True
+  content file: lodas.txt
+  variable name: lodas_file
+---
+template: kanzlei_email_template
+subject: |
+  Neueinstellung $ { company } ....
+content: |
+  ${ tax_confession }
+  Vorname: ${first_name }
+  Nachname: ${last_name }
+  Straße: ${street }
+  Hausnr.: ${street_no }
+  Postleitzahl: ${zip }
+  Stadt: ${city }

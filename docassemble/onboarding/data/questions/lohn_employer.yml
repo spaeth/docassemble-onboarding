@@ -1,0 +1,317 @@
+---
+initial: True  
+code: |
+  holiday_claim_default = 20
+---
+question: |
+  Vertragsangaben
+fields:
+  - note: |
+      Arbeitgeber ist ${ company_name }
+      ${ myQR }
+  - Ersteintrittsdatum: first_entry
+    datatype: date
+    required: False
+    default: |
+      ${ today() }    
+  - Ausgeübte Tätigkeit: job
+    required: False
+    input type: combobox
+    code: |
+      job_list    
+  - Type: contract_type
+    input type: radio
+    default: Vollzeit
+    choices:
+      - Vollzeit
+      - Teilzeit
+      - Kurzfristige Beschäftigung
+      - Minijob
+      - Werkstudent
+    help: |
+      Kurzfristige Beschäfigungen sind Beschäftigungen unter ..... Vgl. auch Jahresübersicht XXX.
+    # Warum wird zwischen Voll und Teilzeit unterschieden?
+  - Das Arbeitsverhältnis ist befristet: is_limit
+    datatype: noyes
+    help: |
+      Eine Befristung führt zu zusätzlichen Angaben.
+  - Type: limit_type
+    input type: radio
+    choices:
+      - Zweckbefristung: 1
+      - Datumsbefristung: 2  
+    js show if: |
+      val('is_limit')
+  - Datum Vertragsabschluss: contract_date
+    datatype: date
+    required: False
+    default: |
+      ${ today() }   
+    js show if: |
+      (val('is_limit') == true) && (val('limit_type') == '2')
+  - Vertrag bis: limit_date
+    datatype: date
+    required: False
+    default: |
+      ${ today() }   
+    js show if: |
+      (val('is_limit') == true) && (val('limit_type') == '2')
+  - schriftlicher Abschluss des befristeten Vertrags: is_limit_by_contract
+    datatype: yesno
+    required: False
+    js show if: |
+      (val('is_limit') == true) && (val('limit_type') == '2')
+  - Befristete Beschäftigung ist für mindestens 2 Monate vorgesehen, mit Aussicht auf Weiterbeschäftigung: is_limit_for_two_month
+    datatype: noyes
+    required: False
+    js show if: |
+      (val('is_limit') == true) && (val('limit_type') == '2')      
+  - Wöchentliche Arbeitszeit: weekly_working_time_in_h
+    datatype: range
+    min: 1
+    max: 50
+    step: 0.5
+    default: 40
+  - Verteilung der Arbeitszeit: daily_working_time_type
+    datatype: radio
+    choices:
+      - gleichmäßig
+      - ungleichmäßig
+    default: gleichmäßig
+  - note: |
+      [TARGET feedback_rest] 
+  - Montag: mo_h
+    datatype: number
+    default: 0.0
+    step: 0.1
+    js show if: |
+      (val('daily_working_time_type') == 'ungleichmäßig')
+  - Dienstag: di_h
+    datatype: number
+    default: 0.0
+    step: 0.1
+    js show if: |
+      (val('daily_working_time_type') == 'ungleichmäßig')
+  - Mittwoch: mi_h
+    datatype: number
+    default: 0.0
+    step: 0.1
+    js show if: |
+      (val('daily_working_time_type') == 'ungleichmäßig')
+  - Donnerstag: do_h
+    datatype: number
+    default: 0.0
+    step: 0.1
+    js show if: |
+      (val('daily_working_time_type') == 'ungleichmäßig')
+  - Freitag: fr_h
+    datatype: number
+    default: 0.0
+    step: 0.1
+    js show if: |
+      (val('daily_working_time_type') == 'ungleichmäßig')
+  - Samstag: sa_h
+    datatype: number
+    default: 0.0
+    step: 0.1
+    js show if: |
+      (val('daily_working_time_type') == 'ungleichmäßig')
+  - Sonntag: so_h
+    datatype: number
+    default: 0.0
+    step: 0.1
+    js show if: |
+      (val('daily_working_time_type') == 'ungleichmäßig') 
+     
+  - Verteilt auf wie viele Tage: weekly_working_days
+    datatype: range
+    js show if: |
+      (val('daily_working_time_type') == 'gleichmäßig')
+    min: 1
+    max: 7
+    step: 1
+    default: 5 
+  - note: |
+      [TARGET feedback_holiday] 
+  - Urlaubsanspruch Kalenderjahr:  holiday_claim
+    datatype: range
+    min: 20
+    max: 50
+    step: 0.5 
+    default: 20
+  - Es liegt eine Schwerbehingerung vor.: is_handicap
+    datatype: noyes    
+  - Es wurde eine vermögenswirksame Leistung abgesprochen.: is_vwl
+    datatype: noyes
+  - Mitteilungen an den Lohnsachbearbeiter: note
+    input type: area
+    required: False
+section: contract
+check in: question_contract
+#calc_holiday
+continue button field: contract_details
+---
+event: joblist
+code: |
+  set_save_status('ignore')
+  wordstart = action_argument('wordstart').lower()
+  results = list()
+  #import codecs
+  #with codecs.open('/usr/share/dict/words', mode='rU', encoding='utf-8') as words_file:
+  #  for line in words_file:
+  #    lower_line = line.lower()
+  #    if lower_line.startswith(wordstart):
+  #      results.append(line.rstrip())
+  json_response(['Fenster putzen', 'Formulare stempeln'])
+---  
+question: |
+  Mitarbeiterangaben
+fields:
+  - Von Mitarbeiter ausfüllen lassen: input_by_employee
+    datatype: yesnoradio
+    default: True
+  - Vorname: first_name
+  - Nachname: last_name
+  - "Benachrichtigen über ...": inform_via
+    required: True
+    show if: input_by_employee
+    datatype: checkboxes
+    none of the above: nur drucken
+    choices:
+      - E-Mail
+      - SMS
+    #default:
+    #  - nur drucken 
+  - E-Mail: email
+    required: False
+    show if: inform_via['E-Mail']
+  - Handynummer: mobile
+    required: False
+    show if: inform_via['SMS']
+  - Geburtsname: birth_name
+    required: False
+    hide if: input_by_employee
+  - Geburtsdatum: birth_date
+    datatype: date
+    hide if: input_by_employee
+  - Straße: street
+    hide if: input_by_employee
+  - Hausnr.: street_no
+    hide if: input_by_employee
+  - Postleitzahl: zip
+    hide if: input_by_employee
+  - Stadt: city
+    hide if: input_by_employee
+  - "Haben Sie eine deutsche Sozialversicherungskarte?": is_insurance_number
+    datatype: yesnoradio
+    default: True
+    hide if: input_by_employee
+  - Sozialversicherungsnummer: insurance_number
+    js show if: |
+      val("is_insurance_number") && ! val("input_by_employee")
+    # js if notwendig da zwei Variablen verglichen werden, evtl. default via code
+  - Geburtsort: birth_place
+    required: False
+    show if:
+      variable: is_insurance_number and not input_by_employee
+      is: False
+  - Geburtland: birth_country
+    required: False
+    code: countries_list()
+    default: DE
+    hide if: is_insurance_number and not input_by_employee
+  - Geschlecht: gender
+    datatype: radio
+    choices:
+      #4003 GESCHLECHT NATÜRLICHE PERSON – NUMERISCH
+      - weiblich: 1
+      - männlich: 0
+      - divers: 2
+      - undefiniert: 3
+    hide if: input_by_employee
+  - Staatsangehörigkeit: nationality
+    # 4214 Nationalitätenschlüssel Lohn
+    input type: combobox
+    code: myoptions
+    hide if: input_by_employee
+  - IBAN: iban
+    default: DE1123913289
+    hide if: input_by_employee
+  - Sozialversicherungsausweis: doc_soz_vers
+    datatype: camera
+    js show if: |
+      val("is_insurance_number") && ! val("input_by_employee")
+    required: False
+    
+  - Höchster Schulabschluss: graduation
+    choices: 
+      - ohne Schulabschluss
+      - Haupt-/Volksschulabschluss
+      - Mittlere Reife oder gleichwertiger Abschluss
+      - Abitur/ Fachabitur
+      - Abschluss unbekannt
+    hide if: input_by_employee
+  - Höchste Berufsausbildung: training
+    choices:
+      - Ohne beruflichen Ausbildungsabschluss
+      - Abschluss einer anerkannten Berufsausbildung
+      - Meister/ Techniker oder gleichwertiger Fachschulabschluss
+      - Bachelor
+      - Master
+      - Diplom/ Magister/ Master/ Staatsexamen
+      - Promotion
+      - Abschluss unbekannt
+    hide if: input_by_employee
+#validation code: |
+#  pass
+#  #if informed_via['E-Mail'] and email:
+#  #  validation_error("Damit eine E-Mail geschickt werden kann, muss diese angegeben werden.")
+
+section: employee
+continue button field: employee_details
+---
+
+event: calc_holiday
+code: |
+  if action_argument('weekly_working_days') != '':
+    answer = float(action_argument('weekly_working_days')) * 5
+    background_response({'holiday_claim_default': answer}, 'fields')
+  background_response()
+---
+event: question_contract
+code: |
+  if action_argument('daily_working_time_type') == "gleichmäßig":
+    content_rest = ''
+    days = (int(action_argument('weekly_working_days')) or 5)*4
+  else:
+    h = float(action_argument('weekly_working_time_in_h'))
+    mo = float(action_argument('mo_h'))
+    di = float(action_argument('di_h'))
+    mi = float(action_argument('mi_h'))
+    do = float(action_argument('do_h'))
+    fr = float(action_argument('fr_h'))
+    sa = float(action_argument('sa_h'))
+    so = float(action_argument('so_h'))
+    rest = h - mo - di - mi - do - fr - sa - so
+    if rest > 0:
+      content_rest = f'<div class="alert alert-info" role="alert"><b>{rest} Stunden</b> müssen noch verteilt werden.</div>'
+    if rest == 0:
+      content_rest = f'<div class="alert alert-success" role="alert">Sie haben alle <b>{h} Stunden</b> verteilt.</div>'
+    if rest < 0:
+      content_rest = f'<div class="alert alert-danger" role="alert">Sie haben zu viele Stunden verteilt.</div>'
+    weekly_working_days = int((mo>0) + (di>0) + (mi>0) + (do>0) + (fr>0) + (sa>0) + (so>0))
+    days = weekly_working_days*4
+    
+  
+  content_holiday = f"Der Mindesturlaub beträgt { days } Tage."
+  background_response([{'target': 'feedback_holiday',
+                      'content': content_holiday},
+                      {'target': 'feedback_rest',
+                      'content': content_rest }])
+
+---
+template: contract_fields
+content: |
+  
+target: holiday_text
+---
