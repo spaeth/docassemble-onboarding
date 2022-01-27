@@ -1,6 +1,11 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
 
+0.0.2: 
+- RV/PV/etc. removed
+- Insurance Combobox implemented
+- RV Option in Minijob inserted
+
 # TODOs:
 ## Automatisierung
 - Warum kein Autofill mehr bei Straße und CO?

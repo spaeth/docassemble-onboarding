@@ -5,11 +5,28 @@ features:
 objects:
   - userdata: DAStore
   - preferences: DAObject
+  - jobs: DAList
+  #.using(there_are_any=True)
 ---
+#code: |
+#  preferences = userdata.get("prefs") or DAObject('preferences')
+#---
+#mandatory: True
+#code: |
+#  preferences.favorite_fruit
+#  if not userdata.defined("prefs"):
+#    userdata.set("prefs", preferences)    
 question: |
   Einstellungen Mandant
 fields:
   - Unternehmensname: preferences.company_name
+  
+  - note: |
+      ${ jobs }
+  
+      ${ jobs.table }
+  
+      ${ jobs.add_action() }
   #tho- note: |
   #tho    Logo: [BR]
   #tho    ${ preferences.user_picture }
@@ -33,17 +50,43 @@ code: |
     userdata.set("prefs3", preferences)
   
 ---
+
+question: |
+  Neuen job hinzufügen.
+fields:
+  - Job: jobs[i]
+#list collect: True
+---
 mandatory: True
 code: |
+  if not defined('job_list'):
+    job_list = userdata.get("job_list") or []
+    jobs.clear()
+    for j in job_list:
+      jobs.append(j)
+    jobs.gathered = True
+    jobs.there_are_any = True
+    jobs.there_is_another = False
+    
   if userdata.get("prefs3"):
     preferences = userdata.get("prefs3")
   else:
     preferences.company_name = ''
     
   prefs_edit
+  tho = [j for j in jobs]
+  userdata.set("job_list", [j for j in jobs])
   final_screen
 ---
+table: jobs.table
+rows: jobs
+columns:
+  - Job: row_item
+edit: True
+---  
 event: final_screen
 question: Stammdaten gespeichert
 subquestion: |
   Unternehmensname : ${ userdata.get("prefs3").company_name }
+  ${ tho }
+  ${ jobs }

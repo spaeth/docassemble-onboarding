@@ -20,13 +20,21 @@ metadata:
     de: Neueinstellung 
     ro: Angajare nouă
 ---
+auto terms:
+  creeper: |
+    A tall green creature that explodes if
+    you get too close.
+  zombie pigman: |
+    A harmless creature who carries a gold
+    sword.
+---
 objects:
   - company_logo: DAStaticFile.using(filename='logo_kanzleispaeth_middle.gif')
 ---
-mandatory: True
-code: |
-  #set_parts(title='Kanzlei Späth KG StBG', logo='<img src="' + company_logo.url_for() + '" style="height: 20px; width: 157px;">')
----
+#mandatory: True
+#code: |
+#  #set_parts(title='Kanzlei Späth KG StBG', logo='<img src="' + company_logo.url_for() + '" style="height: 20px; width: 157px;">')
+#---
 imports:
   - qrcode
 ---
@@ -36,7 +44,7 @@ objects:
 default screen parts:
   navigation bar html: |
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="languageSelector" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a class="nav-link dropdown-toggle" href="#contract_details" id="languageSelector" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img src="${ url_of('docassemble.demo:data/static/united-kingdom.svg') }" style="width:20px;" /><img src="${ url_of('docassemble.demo:data/static/germany.svg') }" style="margin-left:-5px;width:20px;" />
       </a>
       <div class="dropdown-menu" aria-labelledby="languageSelector">
@@ -75,10 +83,6 @@ features:
 objects:
   - userdata: DAStore
 ---
-mandatory: True
-code: |
-  multi_user = True
----
 interview help: |
   # Lohn-Ticket
   Mit diesem Tool können Sie alle notwendigen Daten eines neuen Arbeitnehmers bei diesem erfragen und automatisch an unsere Kanzlei weiterleiten. Es ist unsere Zwischenlösung bis die Datev-Lösung verfügbar sein wird (ca. 3 Jahre). 
@@ -99,10 +103,10 @@ objects:
 ---
 initial: True
 code: |
-  company = "tho.spaeth@gmail.com"
-  company_name = "Das darf nicht hard gecodet werden"
+  #company = "tho.spaeth@gmail.com"
+  #company_name = "Das darf nicht hard gecodet werden"
   set_language(user.language)
-  job_list = ['Fenster putzen', 'Katze kraulen']
+  #job_list = ['Fenster putzen', 'Katze kraulen']
 ---
 event: set_lang
 code: |
@@ -118,37 +122,44 @@ include:
 initial: True
 sets: company_name
 code: |
+  preferences = userdata.get("prefs3") or DAObject('preferences')
+  job_list = userdata.get("job_list") or []
+
   if user_logged_in():
     # Eigenschaften des Mandanten
     logo = company_logo
     #userdata.get("prefs3").user_picture
-    company_name = userdata.get("prefs3").company_name
+    company_name = preferences.company_name if hasattr(preferences, 'company_name') else ''
+    #job_list = preferences.job_list if hasattr(preferences, 'job_list') else []
   
   import pandas as pd
   (models_path, mimetype) = path_and_mimetype('data/sources/countries.csv')
   df_models = pd.read_csv(models_path, sep=',')
   myoptions = [{r[1]: r[2]} for r in df_models.itertuples()]
----
-initial: True
-code: |
-  job_list = ['Nase bohren', 'Rücken kratzen']
----
-event: nationalities
-code: | 
-  set_save_status('ignore')
-  wordstart = action_argument('wordstart').lower()
-  results = list()
   
-  from docassemble.base.util import path_and_mimetype
-  import csv, sys
-  from docassemble.webapp.files import SavedFile
-  from docassemble.webapp.file_access import get_info_from_file_number, get_info_from_file_reference, reference_exists
-  import pandas as pd
+  (insurance_path, mimetype) = path_and_mimetype('data/sources/insurances.xls')
+  insurance_array = pd.read_excel(insurance_path).iloc[5:,1].values.tolist()
+  insurance_list = [r for r in insurance_array]
   
-  (models_path, mimetype) = path_and_mimetype('data/sources/countries.csv')
-  df_models = pd.read_csv(models_path, sep=',')
   
-  json_response(df_models.info())
+  
+#---
+#event: nationalities
+#code: | 
+#  set_save_status('ignore')
+#  wordstart = action_argument('wordstart').lower()
+#  results = list()
+  
+#  from docassemble.base.util import path_and_mimetype
+#  import csv, sys
+#  from docassemble.webapp.files import SavedFile
+#  from docassemble.webapp.file_access import get_info_from_file_number, get_info_from_file_reference, reference_exists
+#  import pandas as pd
+  
+#  (models_path, mimetype) = path_and_mimetype('data/sources/countries.csv')
+#  df_models = pd.read_csv(models_path, sep=',')
+  
+#  json_response(df_models.info())
 
 ---
 sets: 
@@ -276,6 +287,10 @@ question: |
 ---
 mandatory: True
 code: |
+  multi_user = True
+  #menu_items = [ action_menu_item('Einstellungen', 'settings') ]  
+  menu_items = [ {'url': 'https://docassemble.kanzlei-spaeth.de/interview?i=docassemble.playground4onboarding:settings.yml', 'label': 'Einstellungen'} ]
+  
   if not user_logged_in():
   #if defined('employee_details'):
     second_step
@@ -292,6 +307,9 @@ code: |
   nav.set_sections(the_sections)
   
   contract_details
+  if not job in job_list:
+    job_list.append(job)
+    userdata.set("job_list", job_list)
   employee_details
   
   nav.set_section('waiting')

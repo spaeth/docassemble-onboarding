@@ -146,6 +146,10 @@ fields:
   - Mitteilungen an den Lohnsachbearbeiter: note
     input type: area
     required: False
+css: |
+  <style>
+   .dayesnospacing+.dayesnospacing { margin-top: 0rem !important; }
+  </style>      
 section: contract
 check in: question_contract
 #calc_holiday
@@ -163,7 +167,8 @@ code: |
   #    if lower_line.startswith(wordstart):
   #      results.append(line.rstrip())
   json_response(['Fenster putzen', 'Formulare stempeln'])
----  
+---
+### Die Variante der Mitarbeiter, keine Neue!
 question: |
   Mitarbeiterangaben
 fields:
@@ -188,6 +193,11 @@ fields:
   - Handynummer: mobile
     required: False
     show if: inform_via['SMS']
+  - "Pflichtfelder von Mitarbeiter einfordern": do_require_fields
+    datatype: yesnoradio
+    default: True    
+    
+    
   - Geburtsname: birth_name
     required: False
     hide if: input_by_employee

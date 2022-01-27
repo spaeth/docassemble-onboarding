@@ -109,51 +109,68 @@ fields:
     - jüdische Kultussteuer (jd): jd
     default: rk
     required: False
-  - KV: kv
-    choices:
-    - Kein Beitrag: 0
-    - Allgemeiner Beitrag: 1
-    - Ermäßigter Beitrag: 3
-    - Beitrag zur landwirtshcaftlichen KV: 4
-    - Arbeitgeberbeitrag zur landwirtschaftlichen KV: 5
-    - Pauschalbetrag für geringfügig Beschäftigte: 6
-    - Freiwillige KV, Firmenzahler: 9
-    default: 1
-    required: False
+  - note: |
+      ### Arbeitnehmer-Option zur Befreiung von der Aufstockung in der RV (gem. § 6 Abs. 1 b SGB VI)
     show if:
       code: |
-        contract_type == 'Minijob'
-  - RV: rv
-    choices:
-    - kein Beitrag: 0
-    - Beitrag zur Rentenversicherung: 1
-    - "1/2 Beitrag zur Rentenversicherung": 3
-    - Geringfügig entlohnt: 5
-    default: 1
-    required: False
-  - AV: av
-    choices:
-    - Kein Beitrag zur BA: 0
-    - Voller Beitrag zur BA: 1
-    - Halber Beitrag zur BA: 2
-    default: 1
-    required: False
+        contract_type == 'Minijob'   
+  - "Versicherungsfreiheit in der Rentenversicherung": no_pension_insurance
+    datatype: yesno
+    default: no
     show if:
       code: |
-        contract_type == 'Minijob'    
-  - PV: pv
-    choices:
-    - Kein Beitrag zur gesetzlichen PV: 0
-    - Voller Beitrag zur gesetzlichen PV: 1
-    - Halber Beitrag zur gesetzlichen PV: 2
-    default: 1
-    required: True
-    show if:
-      code: |
-        contract_type == 'Minijob'
+        contract_type == 'Minijob'       
+    
+  #- KV: kv
+  #  choices:
+  #  - Kein Beitrag: 0
+  #  - Allgemeiner Beitrag: 1
+  #  - Ermäßigter Beitrag: 3
+  #  - Beitrag zur landwirtshcaftlichen KV: 4
+  #  - Arbeitgeberbeitrag zur landwirtschaftlichen KV: 5
+  #  - Pauschalbetrag für geringfügig Beschäftigte: 6
+  #  - Freiwillige KV, Firmenzahler: 9
+  #  default: 1
+  #  required: False
+  #  show if:
+  #    code: |
+  #      contract_type == 'Minijob'
+  #- RV: rv
+  #  choices:
+  #  - kein Beitrag: 0
+  #  - Beitrag zur Rentenversicherung: 1
+  #  - "1/2 Beitrag zur Rentenversicherung": 3
+  #  - Geringfügig entlohnt: 5
+  #  default: 1
+  #  required: False
+  #- AV: av
+  #  choices:
+  #  - Kein Beitrag zur BA: 0
+  #  - Voller Beitrag zur BA: 1
+  #  - Halber Beitrag zur BA: 2
+  #  default: 1
+  #  required: False
+  #  show if:
+  #    code: |
+  #      contract_type == 'Minijob'    
+  #- PV: pv
+  #  choices:
+  #  - Kein Beitrag zur gesetzlichen PV: 0
+  #  - Voller Beitrag zur gesetzlichen PV: 1
+  #  - Halber Beitrag zur gesetzlichen PV: 2
+  #  default: 1
+  #  required: True
+  #  show if:
+  #    code: |
+  #      contract_type == 'Minijob'
   - Name der Krankenversicherung: health_insurance
     required: True
+    input type: combobox
+    code: |
+      insurance_list    
   - Es liegt eine weitere Beschäftigung vor.: is_further_employment
+    datatype: yesno
+  - "Ich widerspreche der elektronischen Übermittlung von Arbeits- und Nebeneinkommensbescheinigungen an die Bundesagentur für Arbeit.": disallow_electronic_transfer
     datatype: yesno
     
 back button: False
@@ -162,6 +179,7 @@ section: employee_questions
 css: |
   <style>
    .file-preview {display: none}
+   .dayesnospacing+.dayesnospacing { margin-top: 0rem !important; }
   </style>
 ---
 question: |
@@ -197,8 +215,7 @@ fields:
      - Schul-/Studienbescheinigung
      - del Antrag zur Befreiung von der RV-Pflicht
      - del Bescheinigung der privaten Krankenversicherung 
-     - del Unterlagen Sozialkasse Bau/Maler     
-   
+     - del Unterlagen Sozialkasse Bau/Maler  
 css: |
   <style>
    .file-preview {display: none}
@@ -208,7 +225,7 @@ section: employee_documents
 ---
 #need: 
 #  - occupation[-1].start
-question: ${ first_name } ${last_name} bestätigen Sie bitte durch Unterschrift die Richtigkeit der davor gemachten Angaben.
+question: ${ first_name } ${last_name} versichern Sie bitte mit Ihrer Unterschrift, dass die vorstehenden Angaben der Wahrheit entsprechen. Sie verpflichten sich, mit Ihrem Arbeitgeber alle Änderungen, insbesondere in Bezug auf weitere Beschäftigungen (in Bezug auf Art, Dauer und Entgelt) unverzüglich mitzuteilen. 
 signature: an_signature
 under: |
   ${ first_name }   ${ last_name }
