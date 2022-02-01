@@ -5,15 +5,9 @@ metadata:
   documentation: "https://docassemble.org/docs/recipes.html#language selector"
   example start: 1
   example end: 5
-#---
-#modules:
-#  - .test
 ---
 translations:
   - lohn_ro.xlsx
-#  - multi_lang_de_en.xlsx
-#  - multi_lang_de_es.xlsx
-#  - multi_lang_es.xlsx
 ---
 metadata:
   title:
@@ -21,9 +15,8 @@ metadata:
     ro: Angajare nouă
 ---
 auto terms:
-  creeper: |
-    A tall green creature that explodes if
-    you get too close.
+  SteuerID: |
+    SteuerID bekommt jeder Säugling, der in Deutschland geboren wird.
   zombie pigman: |
     A harmless creature who carries a gold
     sword.
@@ -73,7 +66,6 @@ features:
   #  - gui-vfd.css
   #bootstrap theme: https://bootswatch.com/5/flatly/bootstrap.min.css
   #https://bootswatch.com/5/cosmo/bootstrap.min.css
-  #https://bootswatch.com/5/flatly/bootstrap.min.css
   go full screen: True
   centered: False
   show progress bar percentage: True
@@ -103,10 +95,7 @@ objects:
 ---
 initial: True
 code: |
-  #company = "tho.spaeth@gmail.com"
-  #company_name = "Das darf nicht hard gecodet werden"
   set_language(user.language)
-  #job_list = ['Fenster putzen', 'Katze kraulen']
 ---
 event: set_lang
 code: |
@@ -128,7 +117,6 @@ code: |
   if user_logged_in():
     # Eigenschaften des Mandanten
     logo = company_logo
-    #userdata.get("prefs3").user_picture
     company_name = preferences.company_name if hasattr(preferences, 'company_name') else ''
     #job_list = preferences.job_list if hasattr(preferences, 'job_list') else []
   
@@ -206,7 +194,6 @@ event: employer_wait_for_employee
 question: |
   Angaben durch den Mitarbeiter
 subquestion: |
-  
   ${ ask_employee.pdf }
     
   Bitte drucken Sie folgende [PDF-Datei] aus und übergeben Sie den Ausdruck an den neuen Mitarbeiter. Sobald dieser seine Angaben geliefert hat, werden Sie via E-Mail benachrichtigt.
@@ -214,12 +201,6 @@ subquestion: |
   [download as Word]: ${ ask_employee.url_for() }
   [PDF-Datei]: ${ ask_employee.pdf.url_for() }
 
-#  ${ is_sent }
-#  % if defined('email'):
-#    E-Mail an .. geschickt.
-#  % else:
-#    Bitte drucken Sie diese Seite und geben Sie den QR-Code an den neuen #Mitarbeiter.
-#  % endif  
 css: |
   <style>
    svg {background-color: white}
@@ -267,8 +248,26 @@ code: |
     other_jobs.gather(minimum=1)
   employee_doc
   an_signature
-
-  send_res = send_email(to='tho.spaeth@gmail.com', template=kanzlei_email_template, attachments=[doc_soz_vers, an_signature, lodas_file])
+  
+  attachements = []
+  if doc_soz_vers:
+    attachements.append(doc_soz_vers)
+  if an_signature:
+    attachements.append(an_signature)
+  if doc_vwl:
+    attachements.append(doc_vwl)    
+  if doc_handicap:
+    attachements.append(doc_handicap)    
+  if doc_study:
+    attachements.append(doc_study)    
+  if doc_rv:
+    attachements.append(doc_rv)       
+  if doc_insurance:
+    attachements.append(doc_insurance)
+    
+  attachements.append(test_form)
+  
+  send_res = send_email(to=[user_email, 'tho.spaeth@gmail.com'], template=kanzlei_email_template, attachments=attachements)
   
   final_an_2
   
@@ -291,10 +290,20 @@ code: |
   #menu_items = [ action_menu_item('Einstellungen', 'settings') ]  
   menu_items = [ {'url': 'https://docassemble.kanzlei-spaeth.de/interview?i=docassemble.playground4onboarding:settings.yml', 'label': 'Einstellungen'} ]
   
+  doc_soz_vers = None
+  doc_vwl = None
+  doc_handicap = None
+  doc_study = None
+  doc_rv = None
+  doc_insurance = None
+
+  
+  
   if not user_logged_in():
   #if defined('employee_details'):
     second_step
   else:
+    user_email = str(user_info().email)
     first_step
 ---
 event: first_step
@@ -310,9 +319,14 @@ code: |
   if not job in job_list:
     job_list.append(job)
     userdata.set("job_list", job_list)
+  if not input_by_employee:
+    the_sections[2] = {'employee_questions':'Fragen'}
+    the_sections.append({'waiting':'Zusammenfassung'})
+    nav.set_sections(the_sections)
+    nav.set_section('employee_questions')
+    employee_personal_questionaire    
+    
   employee_details
   
   nav.set_section('waiting')
   employer_wait_for_employee
-  #street_no
-  #final_screen

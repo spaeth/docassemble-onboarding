@@ -2,26 +2,34 @@
 question: |
   Persönliche Angaben
 subquestion: |
+  ${ note_to_employee }
+
   Bitte kontrolliere die vorausgefüllten Daten und beantworte die Fragen.
+  <input type="hidden"
+    name="${ encode_name('user_email') }"
+    value=${ json.dumps(user_email) }>
 fields:
-  - html: |
-      <h2>Minijob</h2>
-    show if:
-      code: |
-        contract_type == 'Minijob'
   - Vorname: first_name
+    required: True  
   - Nachname: last_name
+    required: True
   - Geburtsname: birth_name
     required: False
   - Geburtsdatum: birth_date
     datatype: date 
+    required: True
   - Straße: street
+    required: do_require_fields  
   - Hausnr.: street_no
+    required: do_require_fields  
   - Postleitzahl: zip
+    required: do_require_fields  
   - Stadt: city
+    required: do_require_fields
   - "Haben Sie eine *deutsche* Sozialversicherungskarte?": is_insurance_number
     datatype: yesnoradio
     default: True
+    required: do_require_fields    
   - Sozialversicherungsnummer: insurance_number
     help: |
       https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Allgemeine-Informationen/Sozialversicherungsausweis/sozialversicherungsausweis_node.html
@@ -29,17 +37,18 @@ fields:
       lambda y: True if len(y)==12 else validation_error("Es handelt sich um keine deutsche Sozialversicherungsnummer.")      
     show if: is_insurance_number
   - Geburtsort: birth_place
-    required: False
+    required: do_require_fields
     show if:
       variable: is_insurance_number
       is: False
   - Geburtsland: birth_country
-    required: False
+    required: do_require_fields
     code: countries_list()
     default: DE
     hide if: is_insurance_number
   - Geschlecht: gender
     datatype: radio
+    required: do_require_fields    
     choices:
       #4003 GESCHLECHT NATÜRLICHE PERSON – NUMERISCH
       - weiblich: 1
@@ -50,9 +59,11 @@ fields:
     # 4214 Nationalitätenschlüssel Lohn
     input type: combobox
     code: myoptions
+    required: do_require_fields   
   - IBAN: iban
-    default: DE1123913289
+    required: do_require_fields  
   - Höchster Schulabschluss: graduation
+    required: do_require_fields  
     choices: 
       - ohne Schulabschluss
       - Haupt-/Volksschulabschluss
@@ -60,6 +71,7 @@ fields:
       - Abitur/ Fachabitur
       - Abschluss unbekannt
   - Höchste Berufsausbildung: training
+    required: do_require_fields  
     choices:
       - Ohne beruflichen Ausbildungsabschluss
       - Abschluss einer anerkannten Berufsausbildung
@@ -69,8 +81,16 @@ fields:
       - Diplom/ Magister/ Master/ Staatsexamen
       - Promotion
       - Abschluss unbekannt
-  - Steuer-Identifikationsnummer: tax_id
+  - "Steuer-Identifikationsnummer": tax_id
+    required: True
+    show if: 
+      variable: nationality
+      is: 0
+  - "Steuer-Identifikationsnummer": tax_id
     required: False
+    hide if: 
+      variable: nationality
+      is: 0
   - Steuerklasse: tax_class
     choices:
     - I
@@ -79,12 +99,17 @@ fields:
     - IV
     - V
     - VI
-    required: False
+    required: do_require_fields
   - Faktor: tax_factor
     required: False
   - Kinderfreibetrag: tax_child_allowance
+    required: True
+    default: 0
+  - "Ich bin Mitglied einer Kirche": is_church
+    datatype: yesnoradio
     required: False
-  - Konfession: tax_confession
+    default: False
+  - Konfession: tax_confession  
     choices:
     - Römisch-Katholische Kirchensteuer: rk
     - Evangelische Kirchensteuer: ev
@@ -108,9 +133,11 @@ fields:
     - jüdische Kultussteuer (ih): ih
     - jüdische Kultussteuer (jd): jd
     default: rk
-    required: False
+    required: True
+    js show if: |
+      val('is_church')
   - note: |
-      ### Arbeitnehmer-Option zur Befreiung von der Aufstockung in der RV (gem. § 6 Abs. 1 b SGB VI)
+      Arbeitnehmer-Option zur Befreiung von der Aufstockung in der RV * (gem. § 6 Abs. 1 b SGB VI) *
     show if:
       code: |
         contract_type == 'Minijob'   
@@ -120,59 +147,23 @@ fields:
     show if:
       code: |
         contract_type == 'Minijob'       
-    
-  #- KV: kv
-  #  choices:
-  #  - Kein Beitrag: 0
-  #  - Allgemeiner Beitrag: 1
-  #  - Ermäßigter Beitrag: 3
-  #  - Beitrag zur landwirtshcaftlichen KV: 4
-  #  - Arbeitgeberbeitrag zur landwirtschaftlichen KV: 5
-  #  - Pauschalbetrag für geringfügig Beschäftigte: 6
-  #  - Freiwillige KV, Firmenzahler: 9
-  #  default: 1
-  #  required: False
-  #  show if:
-  #    code: |
-  #      contract_type == 'Minijob'
-  #- RV: rv
-  #  choices:
-  #  - kein Beitrag: 0
-  #  - Beitrag zur Rentenversicherung: 1
-  #  - "1/2 Beitrag zur Rentenversicherung": 3
-  #  - Geringfügig entlohnt: 5
-  #  default: 1
-  #  required: False
-  #- AV: av
-  #  choices:
-  #  - Kein Beitrag zur BA: 0
-  #  - Voller Beitrag zur BA: 1
-  #  - Halber Beitrag zur BA: 2
-  #  default: 1
-  #  required: False
-  #  show if:
-  #    code: |
-  #      contract_type == 'Minijob'    
-  #- PV: pv
-  #  choices:
-  #  - Kein Beitrag zur gesetzlichen PV: 0
-  #  - Voller Beitrag zur gesetzlichen PV: 1
-  #  - Halber Beitrag zur gesetzlichen PV: 2
-  #  default: 1
-  #  required: True
-  #  show if:
-  #    code: |
-  #      contract_type == 'Minijob'
   - Name der Krankenversicherung: health_insurance
-    required: True
+    required: do_require_fields
     input type: combobox
     code: |
       insurance_list    
   - Es liegt eine weitere Beschäftigung vor.: is_further_employment
     datatype: yesno
+    required: False    
   - "Ich widerspreche der elektronischen Übermittlung von Arbeits- und Nebeneinkommensbescheinigungen an die Bundesagentur für Arbeit.": disallow_electronic_transfer
     datatype: yesno
-    
+    required: False    
+  - Mitteilungen an den Lohnsachbearbeiter: note_employee
+    input type: area
+    required: False      
+validation code: |
+  if nationality == 'Deutschland' and len(tax_id)>0:
+    validation_error("Als Deutscher besitzen Sie eine Steuer ID, die Sie angeben müssen.")  
 back button: False
 continue button field: employee_personal_questionaire
 section: employee_questions
@@ -187,35 +178,51 @@ question: |
 fields:   
   - Sozialversicherungsausweis: doc_soz_vers
     datatype: camera
-    required: True
+    required: False
     show if:
       code: |
         is_insurance_number == True
   - VWL-Vertrag: doc_vwl
     datatype: camera
-    required: True
+    required: False
     show if:
       code: |
-        is_vwl == False
+        is_vwl == True
   - Schwerbehindertenausweis: doc_handicap
     datatype: camera
-    required: True
+    required: False
     show if:
       code: |
         is_handicap == False
-  #- Arbeitsvertrag: employment_contract
-  #  datatype: camera
-  #  required: False
-  - note: |
-     - SV-Ausweis: ${is_insurance_number}
-     - Schwerbehindertenausweis: ${ is_handicap }
-     - VWL-Vertrag: ${ is_vwl } 
-     - Arbeitsvertrag
-     - ? Bescheinigung über LSt-Abzug/ Anzahl der Beschäftigungstage bei Vorarbeitgebern
-     - Schul-/Studienbescheinigung
-     - del Antrag zur Befreiung von der RV-Pflicht
-     - del Bescheinigung der privaten Krankenversicherung 
-     - del Unterlagen Sozialkasse Bau/Maler  
+  - Studienbescheinigung: doc_study
+    datatype: camera
+    required: False
+    show if:
+      code: |
+        contract_type == "Werkstudent"
+  - Antrag befreiung Rentenversicherung: doc_rv
+    datatype: camera
+    required: False
+    show if:
+      variable: no_pension_insurance
+      is: True
+  - Bescheinigung der privaten Krankenversicherung: doc_insurance
+    datatype: camera
+    required: False
+    show if:
+      code: |
+        health_insurance not in insurance_list
+  - "Ich versichere, dass die vorstehenden Angaben der Wahrheit entsprechen.": is_truth
+    datatype: yesno
+  - "Ich verpflichte mich, meinem Arbeitgeber alle Änderungen, insbesondere in Bezug auf weitere Beschäftigungen (in Bezug auf Art, Dauer und Entgelt) unverzüglich mitzuteilen.": is_change
+    datatype: yesno
+validation code: |
+  if not is_truth:
+    validation_error("Bitte korrigieren Sie Ihre Angaben.")
+  if not is_change:
+    validation_error("Sie müssen Ihrem Arbeitgeber alle Änderungen mitteilen.")
+    
+
 css: |
   <style>
    .file-preview {display: none}
@@ -225,9 +232,11 @@ section: employee_documents
 ---
 #need: 
 #  - occupation[-1].start
-question: ${ first_name } ${last_name} versichern Sie bitte mit Ihrer Unterschrift, dass die vorstehenden Angaben der Wahrheit entsprechen. Sie verpflichten sich, mit Ihrem Arbeitgeber alle Änderungen, insbesondere in Bezug auf weitere Beschäftigungen (in Bezug auf Art, Dauer und Entgelt) unverzüglich mitzuteilen. 
+question: Ich ${ first_name } ${last_name} versichere mit meiner Unterschrift, dass die vorstehenden Angaben der Wahrheit entsprechen. 
+help: |
+  Unterschreiben Sie mit dem Finger ....
 signature: an_signature
 under: |
-  ${ first_name }   ${ last_name }
+  ${ first_name } ${ last_name }
 required: False
 ---

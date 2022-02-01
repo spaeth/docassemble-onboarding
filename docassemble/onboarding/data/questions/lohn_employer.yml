@@ -7,8 +7,8 @@ question: |
   Vertragsangaben
 fields:
   - note: |
-      Arbeitgeber ist ${ company_name }
-      ${ myQR }
+      Arbeitgeber ist ${ company_name }, die Antwort-Email ist ${ user_email }.
+      
   - Ersteintrittsdatum: first_entry
     datatype: date
     required: False
@@ -30,7 +30,6 @@ fields:
       - Werkstudent
     help: |
       Kurzfristige Beschäfigungen sind Beschäftigungen unter ..... Vgl. auch Jahresübersicht XXX.
-    # Warum wird zwischen Voll und Teilzeit unterschieden?
   - Das Arbeitsverhältnis ist befristet: is_limit
     datatype: noyes
     help: |
@@ -139,11 +138,11 @@ fields:
     max: 50
     step: 0.5 
     default: 20
-  - Es liegt eine Schwerbehingerung vor.: is_handicap
+  - Es liegt eine Schwerbehinderung vor.: is_handicap
     datatype: noyes    
   - Es wurde eine vermögenswirksame Leistung abgesprochen.: is_vwl
     datatype: noyes
-  - Mitteilungen an den Lohnsachbearbeiter: note
+  - Mitteilungen an den Lohnsachbearbeiter: note_employer
     input type: area
     required: False
 css: |
@@ -155,19 +154,6 @@ check in: question_contract
 #calc_holiday
 continue button field: contract_details
 ---
-event: joblist
-code: |
-  set_save_status('ignore')
-  wordstart = action_argument('wordstart').lower()
-  results = list()
-  #import codecs
-  #with codecs.open('/usr/share/dict/words', mode='rU', encoding='utf-8') as words_file:
-  #  for line in words_file:
-  #    lower_line = line.lower()
-  #    if lower_line.startswith(wordstart):
-  #      results.append(line.rstrip())
-  json_response(['Fenster putzen', 'Formulare stempeln'])
----
 ### Die Variante der Mitarbeiter, keine Neue!
 question: |
   Mitarbeiterangaben
@@ -175,8 +161,14 @@ fields:
   - Von Mitarbeiter ausfüllen lassen: input_by_employee
     datatype: yesnoradio
     default: True
+  - "Pflichtfelder einfordern": do_require_fields
+    datatype: yesnoradio
+    default: True   
+    
   - Vorname: first_name
+    show if: input_by_employee  
   - Nachname: last_name
+    show if: input_by_employee
   - "Benachrichtigen über ...": inform_via
     required: True
     show if: input_by_employee
@@ -184,7 +176,7 @@ fields:
     none of the above: nur drucken
     choices:
       - E-Mail
-      - SMS
+      #- SMS
     #default:
     #  - nur drucken 
   - E-Mail: email
@@ -193,89 +185,10 @@ fields:
   - Handynummer: mobile
     required: False
     show if: inform_via['SMS']
-  - "Pflichtfelder von Mitarbeiter einfordern": do_require_fields
-    datatype: yesnoradio
-    default: True    
-    
-    
-  - Geburtsname: birth_name
-    required: False
-    hide if: input_by_employee
-  - Geburtsdatum: birth_date
-    datatype: date
-    hide if: input_by_employee
-  - Straße: street
-    hide if: input_by_employee
-  - Hausnr.: street_no
-    hide if: input_by_employee
-  - Postleitzahl: zip
-    hide if: input_by_employee
-  - Stadt: city
-    hide if: input_by_employee
-  - "Haben Sie eine deutsche Sozialversicherungskarte?": is_insurance_number
-    datatype: yesnoradio
-    default: True
-    hide if: input_by_employee
-  - Sozialversicherungsnummer: insurance_number
-    js show if: |
-      val("is_insurance_number") && ! val("input_by_employee")
-    # js if notwendig da zwei Variablen verglichen werden, evtl. default via code
-  - Geburtsort: birth_place
-    required: False
-    show if:
-      variable: is_insurance_number and not input_by_employee
-      is: False
-  - Geburtland: birth_country
-    required: False
-    code: countries_list()
-    default: DE
-    hide if: is_insurance_number and not input_by_employee
-  - Geschlecht: gender
-    datatype: radio
-    choices:
-      #4003 GESCHLECHT NATÜRLICHE PERSON – NUMERISCH
-      - weiblich: 1
-      - männlich: 0
-      - divers: 2
-      - undefiniert: 3
-    hide if: input_by_employee
-  - Staatsangehörigkeit: nationality
-    # 4214 Nationalitätenschlüssel Lohn
-    input type: combobox
-    code: myoptions
-    hide if: input_by_employee
-  - IBAN: iban
-    default: DE1123913289
-    hide if: input_by_employee
-  - Sozialversicherungsausweis: doc_soz_vers
-    datatype: camera
-    js show if: |
-      val("is_insurance_number") && ! val("input_by_employee")
-    required: False
-    
-  - Höchster Schulabschluss: graduation
-    choices: 
-      - ohne Schulabschluss
-      - Haupt-/Volksschulabschluss
-      - Mittlere Reife oder gleichwertiger Abschluss
-      - Abitur/ Fachabitur
-      - Abschluss unbekannt
-    hide if: input_by_employee
-  - Höchste Berufsausbildung: training
-    choices:
-      - Ohne beruflichen Ausbildungsabschluss
-      - Abschluss einer anerkannten Berufsausbildung
-      - Meister/ Techniker oder gleichwertiger Fachschulabschluss
-      - Bachelor
-      - Master
-      - Diplom/ Magister/ Master/ Staatsexamen
-      - Promotion
-      - Abschluss unbekannt
-    hide if: input_by_employee
-#validation code: |
-#  pass
-#  #if informed_via['E-Mail'] and email:
-#  #  validation_error("Damit eine E-Mail geschickt werden kann, muss diese angegeben werden.")
+  - Mitteilungen an den Mitarbeiter: note_to_employee
+    input type: area
+    default: Schön, dass Sie bei uns anfangen.
+    required: False    
 
 section: employee
 continue button field: employee_details

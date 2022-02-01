@@ -1,5 +1,8 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
+0.0.3:
+- div. verbesserungen
+- Stand Übergabe an Laura
 
 0.0.2: 
 - RV/PV/etc. removed

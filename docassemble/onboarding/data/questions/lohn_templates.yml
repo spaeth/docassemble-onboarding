@@ -7,6 +7,14 @@ attachment:
     - pdf  
   docx template file: template_employee.docx
 ---
+attachment:
+  filename: Testformular_${ last_name }.docx
+  name: Testformular
+  variable name: test_form
+  valid formats:
+    - pdf  
+  docx template file: test_template.docx
+---
 template: ag_email_template
 subject: |
   Neueinstellung 
@@ -23,12 +31,13 @@ attachment:
 ---
 template: kanzlei_email_template
 subject: |
-  Neueinstellung $ { company } ....
+  Neueinstellung ${ company_name } 
 content: |
-  ${ tax_confession }
-  Vorname: ${first_name }
-  Nachname: ${last_name }
-  Straße: ${street }
-  Hausnr.: ${street_no }
-  Postleitzahl: ${zip }
-  Stadt: ${city }
+  ${ company_name } bittet um die Anmeldung von ${first_name } ${last_name } zum ${ first_entry }.  
+  Nachricht von Mandant:
+  ${ note_employer }
+  
+  Nachricht von Mitarbeiter des Mandanten:
+  ${}
+  
+  
