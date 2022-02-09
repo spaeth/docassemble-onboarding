@@ -1,8 +1,12 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
-0.0.3:
+0.0.5:
+- added settings
+- json attachement
+
+0.0.4:
 - div. verbesserungen
-- Stand Übergabe an Laura
+- Stand Übergabe an Laura - Rückgabe an Thomas Ausgabe in PDF Personalfragebogeformular möglich
 
 0.0.2: 
 - RV/PV/etc. removed

@@ -8,12 +8,19 @@ attachment:
   docx template file: template_employee.docx
 ---
 attachment:
-  filename: Testformular_${ last_name }.docx
-  name: Testformular
+  name: Personalfragebogen
+  filename: Personalfragebogen_${ last_name }.docx
   variable name: test_form
   valid formats:
     - pdf  
-  docx template file: test_template.docx
+  skip undefined: True
+  docx template file: personalfragebogen_test.docx
+---
+attachment:
+  name: Personalfragebogen2
+  filename: Personalfragebogen_${ last_name }.json
+  variable name: form_as_json
+  content: ${ all_variables() }
 ---
 template: ag_email_template
 subject: |

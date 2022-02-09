@@ -20,21 +20,16 @@ question: |
   Einstellungen Mandant
 fields:
   - Unternehmensname: preferences.company_name
-  
+  - Mandantennummer: preferences.mnr
+  - Beraternummer: preferences.bnr
+  - Zähler Personalnummer: preferences.pnr
+  - Benutzerdefinierte Satz: preferences.welcome_text
+    input type: area
+    required: False
   - note: |
-      ${ jobs }
-  
       ${ jobs.table }
   
       ${ jobs.add_action() }
-  #tho- note: |
-  #tho    Logo: [BR]
-  #tho    ${ preferences.user_picture }
-  #- neues Logo hochladen: new_logo
-  #  datatype: yesno
-  #tho - Logo: preferences.user_picture
-  #tho   datatype: file
-  #  #js show if: val('new_logo')
 css: |
   <style>
     .file-preview {display: none;}
@@ -46,7 +41,6 @@ continue button field: prefs_edit
 mandatory: True
 code: |
   if prefs_edit:
-    #tho preferences.user_picture.set_attributes(persistent=True)
     userdata.set("prefs3", preferences)
   
 ---
@@ -55,7 +49,6 @@ question: |
   Neuen job hinzufügen.
 fields:
   - Job: jobs[i]
-#list collect: True
 ---
 mandatory: True
 code: |

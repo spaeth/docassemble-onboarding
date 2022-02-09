@@ -1,4 +1,4 @@
-#---
+---
 #default language: de
 ---
 metadata:
@@ -250,7 +250,7 @@ code: |
   an_signature
   
   attachements = []
-  if doc_soz_vers:
+  if defined('doc_soz_vers'):
     attachements.append(doc_soz_vers)
   if an_signature:
     attachements.append(an_signature)
@@ -266,6 +266,7 @@ code: |
     attachements.append(doc_insurance)
     
   attachements.append(test_form)
+  attachements.append(form_as_json)
   
   send_res = send_email(to=[user_email, 'tho.spaeth@gmail.com'], template=kanzlei_email_template, attachments=attachements)
   
