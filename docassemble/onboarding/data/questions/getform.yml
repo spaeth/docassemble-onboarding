@@ -1,10 +1,10 @@
 metadata:
-  title: Einstellung eines neuen Mitarbeiters
+  title: Personalfragebogen über Schlüssel abrufen
   documentation: "https://docassemble.org/docs/fields.html#fields"
   short title: |
-    Neueinstellung
+    Schlüsseleingabe für Personalfragebogen
   description: |
-    Interaktiver Personalfragebogen zur Neueinstellung eines Mitarbeiters.
+    Vorbereiteten Personalfragebogen des neuen Arbeitgebers über einen Schlüssel abrufen.
   authors:
     - name: Dr. Thomas Späth
       organization: Kanzlei Späth KG StBG
