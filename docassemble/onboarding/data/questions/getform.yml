@@ -1,6 +1,16 @@
 metadata:
-  title: Text
+  title: Einstellung eines neuen Mitarbeiters
   documentation: "https://docassemble.org/docs/fields.html#fields"
+  short title: |
+    Neueinstellung
+  description: |
+    Interaktiver Personalfragebogen zur Neueinstellung eines Mitarbeiters.
+  authors:
+    - name: Dr. Thomas Späth
+      organization: Kanzlei Späth KG StBG
+  revision_date: 2022-02-10
+  tags:
+    - lohn
 ---
 question: |
   Geben Sie den Code vom Arbeitgeber ein

@@ -14,6 +14,9 @@ This ist an interview with docassemble for on-boarding employees in client-compa
 - RV Option in Minijob inserted
 
 # TODOs:
+
+https://kanzleispaeth-my.sharepoint.com/:x:/g/personal/thomas_spaeth_kanzlei-spaeth_de/ETohst0E18xBmOgw0BgQPq8BHasdEzsAghDmYscC6p4rqQ
+
 ## Automatisierung
 - Warum kein Autofill mehr bei Straße und CO?
 
@@ -40,16 +43,6 @@ Dokumente
 - Mitteilungen in E-Mail an prominenter Stelle
 - Mehrsprachige E-Mail eingestellte Spache + englisch
 - Mehrsprachiges (romämisch und englische) Beschreibung zum drucken
-- Notwendigkeit prüfen:
-  - SV-Ausweis: True
-  - Schwerbehindertenausweis: True
-  - VWL-Vertrag: False
-  - Arbeitsvertrag
-  - ? Bescheinigung über LSt-Abzug/ Anzahl der Beschäftigungstage bei Vorarbeitgebern
-  - Schul-/Studienbescheinigung
-  - del Antrag zur Befreiung von der RV-Pflicht
-  - del Bescheinigung der privaten Krankenversicherung
-  - del Unterlagen Sozialkasse Bau/Maler
 
 Dokumentation
   - Einzelnen Felder Erläutern
