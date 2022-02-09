@@ -2,7 +2,7 @@ metadata:
   title: Personalfragebogen über Schlüssel abrufen
   documentation: "https://docassemble.org/docs/fields.html#fields"
   short title: |
-    Schlüsseleingabe für Personalfragebogen
+    Personalfragebogen über Schlüssel
   description: |
     Vorbereiteten Personalfragebogen des neuen Arbeitgebers über einen Schlüssel abrufen.
   authors:

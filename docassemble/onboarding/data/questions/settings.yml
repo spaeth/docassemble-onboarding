@@ -1,4 +1,18 @@
 ---
+metadata:
+  title: Stammdaten einstellen
+  documentation: "https://docassemble.org/docs/fields.html#fields"
+  short title: |
+    Nutzereinstellungen
+  description: |
+    Wichtige User-spezifische Einstellungen, die den Mandantenbetrieb betreffen.
+  authors:
+    - name: Dr. Thomas Späth
+      organization: Kanzlei Späth KG StBG
+  revision_date: 2022-02-10
+  tags:
+    - lohn
+---
 features:
   labels above fields: True
 ---
