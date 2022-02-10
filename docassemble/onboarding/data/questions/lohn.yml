@@ -15,6 +15,13 @@ metadata:
   tags:
     - lohn
 ---
+image sets:
+  freepik:
+    images:
+      waiting: wrinkled-blonde-european-woman-being-deep-thoughts-sits-comfortable-chair-waits-something-feels-lonely-melancholic-wears-stylish-clothes.jpg
+    attribution: |
+      Das Bild wurde von freepik.com erstellt.
+---
 translations:
   - lohn_ro.xlsx
   - lohn_en.xlsx  
@@ -286,7 +293,7 @@ code: |
     attachements.append(doc_insurance)
     
   attachements.append(test_form)
-  #attachements.append(form_as_json)
+  attachements.append(lodas_json)
   
   send_res = send_email(to=[user_email, 'tho.spaeth@gmail.com'], template=kanzlei_email_template, attachments=attachements)
   

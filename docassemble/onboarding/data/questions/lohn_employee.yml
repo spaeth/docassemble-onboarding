@@ -245,10 +245,6 @@ event: final_an_2
 question: |
   Danke 
 subquestion: |
+  [FILE waiting, 100%]
   für die Beantwortung der Fragen und Unterlagen. Wir nehmen jetzt die Anmeldung vor.
-  E-Mail: ${ email_msg}
-  folgende Dateien wurden erstellt:
-  ${ attachements }
-  ${ form_as_json }
-  ${ send_res }
 ---

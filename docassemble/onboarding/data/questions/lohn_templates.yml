@@ -1,6 +1,6 @@
 ---
 attachment:
-  filename: ask_employee
+  filename: fragebogen_${ last_name }.pdf
   name: ask_employee
   variable name: ask_employee
   valid formats:
@@ -20,10 +20,10 @@ attachment:
 ---
 attachment:
   name: LODAS Import Datei für ${ first_name } ${ last_name }
-  filename: ${ first_name }_${ last_name }.txt
+  filename: ${ first_name }_${ last_name }_json
   raw: True
   content file: lodas_json.txt
-  variable name: form_as_json
+  variable name: lodas_json
 ---
 template: ag_email_template
 subject: |
@@ -43,11 +43,13 @@ template: kanzlei_email_template
 subject: |
   Neueinstellung ${ company_name } 
 content: |
-  ${ company_name } bittet um die Anmeldung von ${first_name } ${last_name } zum ${ first_entry }.  
+  ${ company_name } bittet um die Anmeldung von ${ first_name } ${last_name } zum ${ first_entry }. Der Mitarbeiter wird als ${ contract_type } arbeiten.  
+  
   Nachricht von Mandant:
   ${ note_employer }
   
   Nachricht von Mitarbeiter des Mandanten:
-  ${}
+  ${ note_employee }
+  
   
   
