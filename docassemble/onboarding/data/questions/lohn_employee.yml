@@ -3,6 +3,7 @@ question: |
   Persönliche Angaben
 subquestion: |
   ${ note_to_employee }
+  Sprache: ${ user_language }
 
   Bitte kontrolliere die vorausgefüllten Daten und beantworte die Fragen.
   <input type="hidden"
@@ -174,7 +175,7 @@ css: |
   </style>
 ---
 question: |
-  Unterlagen ${ is_insurance_number }
+  Unterlagen
 fields:   
   - Sozialversicherungsausweis: doc_soz_vers
     datatype: camera
@@ -239,4 +240,15 @@ signature: an_signature
 under: |
   ${ first_name } ${ last_name }
 required: False
+---
+event: final_an_2
+question: |
+  Danke 
+subquestion: |
+  für die Beantwortung der Fragen und Unterlagen. Wir nehmen jetzt die Anmeldung vor.
+  E-Mail: ${ email_msg}
+  folgende Dateien wurden erstellt:
+  ${ attachements }
+  ${ form_as_json }
+  ${ send_res }
 ---

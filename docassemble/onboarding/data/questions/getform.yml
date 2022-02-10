@@ -13,9 +13,9 @@ metadata:
     - lohn
 ---
 question: |
-  Geben Sie den Code vom Arbeitgeber ein
+  Geben Sie bitte den Code für Ihren personalisierten Fragebogen ein.
 subquestion: |
-  Please be specific.
+  Ihr neuer Arbeitgeber hat Ihnen einen Code zur Verfügung gestellt. Geben Sie diesen hier ein, damit Sie auf Ihren personalisierten Fragebogen gelangen.
 fields:
   - Code: key
 ---

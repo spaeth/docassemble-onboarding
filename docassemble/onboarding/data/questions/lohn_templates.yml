@@ -5,7 +5,9 @@ attachment:
   variable name: ask_employee
   valid formats:
     - pdf  
-  docx template file: template_employee.docx
+  docx template file: 
+    code: |
+      'invite_employee_' + get_language() + '.docx'     
 ---
 attachment:
   name: Personalfragebogen
@@ -17,16 +19,17 @@ attachment:
   docx template file: personalfragebogen_test.docx
 ---
 attachment:
-  name: Personalfragebogen2
-  filename: Personalfragebogen_${ last_name }.json
+  name: LODAS Import Datei für ${ first_name } ${ last_name }
+  filename: ${ first_name }_${ last_name }.txt
+  raw: True
+  content file: lodas_json.txt
   variable name: form_as_json
-  content: ${ all_variables() }
 ---
 template: ag_email_template
 subject: |
-  Neueinstellung 
+  Neueinstellung ${ company_name }
 content: |
-  ${ company }
+  ${ company_name }
   ${ interview_url_action('second_step') }
 ---
 attachment:

@@ -1,6 +1,6 @@
----
-#default language: de
 #---
+#default language: de
+---
 metadata:
   title: Neuen Mitarbeiter einstellen
   documentation: "https://docassemble.org/docs/fields.html#fields"
@@ -17,18 +17,17 @@ metadata:
 ---
 translations:
   - lohn_ro.xlsx
+  - lohn_en.xlsx  
 ---
 metadata:
   title:
     de: Neueinstellung 
+    en: onboarding new employee
     ro: Angajare nouă
 ---
 auto terms:
-  SteuerID: |
-    SteuerID bekommt jeder Säugling, der in Deutschland geboren wird.
-  zombie pigman: |
-    A harmless creature who carries a gold
-    sword.
+  Steuer-Identifikationsnummer: |
+    Steuer-Identifikationsnummer bekommt jeder Säugling, der in Deutschland geboren wird.
 ---
 objects:
   - company_logo: DAStaticFile.using(filename='logo_kanzleispaeth_middle.gif')
@@ -127,6 +126,7 @@ code: |
     # Eigenschaften des Mandanten
     logo = company_logo
     company_name = preferences.company_name if hasattr(preferences, 'company_name') else ''
+    welcome_text = preferences.welcome_text if hasattr(preferences, 'welcome_text') else ''
     #job_list = preferences.job_list if hasattr(preferences, 'job_list') else []
   
   import pandas as pd
@@ -162,24 +162,34 @@ code: |
 sets: 
   - new_key
   - new_url
-  - is_sent
 code: |
-  if defined('email'):
-    is_sent = background_action('send_mail', email=email)
-  else:
-    is_sent = True
-    
+
   import string
   import random
   
   new_key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
   new_url = str(interview_url_action('second_step'))
-  new_url_with_key = interview_url(i='docassemble.playground4:getform.yml') + '&key' + new_key
+  new_url_with_key = interview_url(i='docassemble.onboarding:data/questions/getform.yml') + '&key' + new_key
   #key = r.key(new_key)
   r.set(new_key, new_url )
   
   myQR.initialize(filename="qr.png")
   qrcode.make(new_url).save(myQR.path())
+  
+  if inform_via['SMS']:
+    if mobile:
+      send_sms(to=mobile, body='Fülle bitte den Personalfragebogen unter folgendem Link aus ' + new_url)
+      sms_sent = True
+    else:
+      sms_sent = False
+      
+  if inform_via['E-Mail']:
+    email_msg = background_action('send_mail', email=email)
+    email_sent = True
+  else:
+    email_msg = None
+    email_sent = False      
+      
 
 ---
 objects:
@@ -215,7 +225,7 @@ css: |
    svg {background-color: white}
   </style>  
   
-secction: waiting
+section: waiting
 buttons:
   - Restart: restart
   - Exit: http:\\kanzlei-spaeth.de
@@ -251,6 +261,7 @@ code: |
   the_sections.append({'employee_documents':'Unterlagen'})
   the_sections.append({'employee_sign':'Unterschrift'})
   nav.set_sections(the_sections)
+  set_language(user_language)
   employee_personal_questionaire
   if is_further_employment and not defined('test_list'):
     other_jobs.appendObject()
@@ -275,7 +286,7 @@ code: |
     attachements.append(doc_insurance)
     
   attachements.append(test_form)
-  attachements.append(form_as_json)
+  #attachements.append(form_as_json)
   
   send_res = send_email(to=[user_email, 'tho.spaeth@gmail.com'], template=kanzlei_email_template, attachments=attachements)
   
@@ -283,24 +294,13 @@ code: |
   
 
 ---
-event: final_an_2
-question: |
-  Danke 
-subquestion: |
-  für die Beantwortung der Fragen und Unterlagen. Wir nehmen jetzt die Anmeldung und Verträge für Sie vor.
-#  ${ send_res }
----
-event: employer_questionaire_2
-question: |
-  Dein Name ist ${ employee_personal_qustionaire }.
----
 mandatory: True
 code: |
   multi_user = True
   #menu_items = [ action_menu_item('Einstellungen', 'settings') ]  
-  menu_items = [ {'url': 'https://docassemble.kanzlei-spaeth.de/interview?i=docassemble.playground4onboarding:settings.yml', 'label': 'Einstellungen'} ]
+  #menu_items = [ {'url': 'https://docassemble.kanzlei-spaeth.de/interview?i=docassemble.playground4onboarding:settings.yml', 'label': 'Einstellungen'} ]
   
-  doc_soz_vers = None
+  #doc_soz_vers = None
   doc_vwl = None
   doc_handicap = None
   doc_study = None
@@ -339,4 +339,5 @@ code: |
   employee_details
   
   nav.set_section('waiting')
+  set_language(user_language)
   employer_wait_for_employee

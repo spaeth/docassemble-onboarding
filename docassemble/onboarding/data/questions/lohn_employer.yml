@@ -7,13 +7,11 @@ question: |
   Vertragsangaben
 fields:
   - note: |
-      Arbeitgeber ist ${ company_name }, die Antwort-Email ist ${ user_email }.
-      
+      Arbeitgeber ist ${ company_name }, die Antwort-Email ist ${ user_email }.   
   - Ersteintrittsdatum: first_entry
     datatype: date
-    required: False
     default: |
-      ${ today() }    
+      ${ as_datetime(str(today().plus(months=1).month) + '/1/' + str(today().year)) }
   - Ausgeübte Tätigkeit: job
     required: False
     input type: combobox
@@ -176,9 +174,10 @@ fields:
     none of the above: nur drucken
     choices:
       - E-Mail
-      #- SMS
-    #default:
-    #  - nur drucken 
+      - SMS
+      - drucken
+    default:
+      - drucken 
   - E-Mail: email
     required: False
     show if: inform_via['E-Mail']
@@ -188,7 +187,14 @@ fields:
   - Mitteilungen an den Mitarbeiter: note_to_employee
     input type: area
     default: Schön, dass Sie bei uns anfangen.
-    required: False    
+    required: False
+  - Standardsprache: user_language
+    input type: radio
+    choices:
+    - Deutsch: de
+    - Englisch: en
+    - Romänisch: ro
+    default: de
 
 section: employee
 continue button field: employee_details
