@@ -1,5 +1,12 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
+0.0.8:
+- improved lodas export
+- fixed required fields
+
+0.0.7:
+- messages improved
+
 0.0.6:
 - implemeted SMS and E-Mail Feature
 - multiple language templates

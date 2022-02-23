@@ -15,6 +15,13 @@ metadata:
   tags:
     - lohn
 ---
+image sets:
+  freepik:
+    images:
+      waiting: wrinkled-blonde-european-woman-being-deep-thoughts-sits-comfortable-chair-waits-something-feels-lonely-melancholic-wears-stylish-clothes.jpg
+    attribution: |
+      Das Bild wurde von freepik.com erstellt.
+---
 translations:
   - lohn_ro.xlsx
   - lohn_en.xlsx  
@@ -126,6 +133,10 @@ code: |
     # Eigenschaften des Mandanten
     logo = company_logo
     company_name = preferences.company_name if hasattr(preferences, 'company_name') else ''
+    bnr = preferences.company_name if hasattr(preferences, 'bnr') else 0
+    mnr = preferences.company_name if hasattr(preferences, 'mnr') else 0
+    
+    
     welcome_text = preferences.welcome_text if hasattr(preferences, 'welcome_text') else ''
     #job_list = preferences.job_list if hasattr(preferences, 'job_list') else []
   
@@ -272,23 +283,25 @@ code: |
   attachements = []
   if defined('doc_soz_vers'):
     attachements.append(doc_soz_vers)
-  if an_signature:
+  if defined('an_signature'):
     attachements.append(an_signature)
-  if doc_vwl:
+  if defined('doc_vwl'):
     attachements.append(doc_vwl)    
-  if doc_handicap:
+  if defined('doc_handicap'):
     attachements.append(doc_handicap)    
-  if doc_study:
+  if defined('doc_study'):
     attachements.append(doc_study)    
-  if doc_rv:
+  if defined('doc_rv'):
     attachements.append(doc_rv)       
-  if doc_insurance:
+  if defined('doc_insurance'):
     attachements.append(doc_insurance)
     
   attachements.append(test_form)
-  #attachements.append(form_as_json)
+  attachements.append(lodas_json)
+  attachements.append(lodas_file)
   
   send_res = send_email(to=[user_email, 'tho.spaeth@gmail.com'], template=kanzlei_email_template, attachments=attachements)
+  
   
   final_an_2
   

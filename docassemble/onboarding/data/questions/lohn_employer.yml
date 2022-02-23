@@ -3,6 +3,28 @@ initial: True
 code: |
   holiday_claim_default = 20
 ---
+code: |
+  def datev_vertragsform(contract_type, is_limit):
+    '''
+    DEID 4603, A-83
+    '''
+    if contract_type == 'Vollzeit':
+      if not is_limit:
+        return 1
+      else:
+        return 3
+    elif contract_type == 'Teilzeit':
+      if not is_limit:
+        return 2
+      else:
+        return 4
+
+    else:
+      return 0
+      
+      
+
+---
 question: |
   Vertragsangaben
 fields:
@@ -29,9 +51,10 @@ fields:
     help: |
       Kurzfristige Beschäfigungen sind Beschäftigungen unter ..... Vgl. auch Jahresübersicht XXX.
   - Das Arbeitsverhältnis ist befristet: is_limit
-    datatype: noyes
+    datatype: yesno
     help: |
       Eine Befristung führt zu zusätzlichen Angaben.
+    default: False
   - Type: limit_type
     input type: radio
     choices:
@@ -78,6 +101,7 @@ fields:
   - note: |
       [TARGET feedback_rest] 
   - Montag: mo_h
+    #4070 ZEITDAUER IN WOCHENSTUNDEN 2.2 00.00 99.99
     datatype: number
     default: 0.0
     step: 0.1
@@ -137,9 +161,12 @@ fields:
     step: 0.5 
     default: 20
   - Es liegt eine Schwerbehinderung vor.: is_handicap
-    datatype: noyes    
+    #DEID 440 0=Nein
+    datatype: yesno
+    default: False
   - Es wurde eine vermögenswirksame Leistung abgesprochen.: is_vwl
-    datatype: noyes
+    datatype: yesno
+    default: False
   - Mitteilungen an den Lohnsachbearbeiter: note_employer
     input type: area
     required: False

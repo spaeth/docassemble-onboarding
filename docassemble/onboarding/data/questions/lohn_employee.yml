@@ -3,7 +3,6 @@ question: |
   Persönliche Angaben
 subquestion: |
   ${ note_to_employee }
-  Sprache: ${ user_language }
 
   Bitte kontrolliere die vorausgefüllten Daten und beantworte die Fragen.
   <input type="hidden"
@@ -34,8 +33,9 @@ fields:
   - Sozialversicherungsnummer: insurance_number
     help: |
       https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Allgemeine-Informationen/Sozialversicherungsausweis/sozialversicherungsausweis_node.html
+    required: do_require_fields  
     validate: |
-      lambda y: True if len(y)==12 else validation_error("Es handelt sich um keine deutsche Sozialversicherungsnummer.")      
+      lambda y: True if (len(y)==12 or len(y)==0) else validation_error("Es handelt sich um keine deutsche Sozialversicherungsnummer.")      
     show if: is_insurance_number
   - Geburtsort: birth_place
     required: do_require_fields
@@ -63,6 +63,8 @@ fields:
     required: do_require_fields   
   - IBAN: iban
     required: do_require_fields  
+  - BIC: bic
+    required: do_require_fields      
   - Höchster Schulabschluss: graduation
     required: do_require_fields  
     choices: 
@@ -83,7 +85,7 @@ fields:
       - Promotion
       - Abschluss unbekannt
   - "Steuer-Identifikationsnummer": tax_id
-    required: True
+    required: do_require_fields
     show if: 
       variable: nationality
       is: 0
@@ -104,7 +106,7 @@ fields:
   - Faktor: tax_factor
     required: False
   - Kinderfreibetrag: tax_child_allowance
-    required: True
+    required: do_require_fields
     default: 0
   - "Ich bin Mitglied einer Kirche": is_church
     datatype: yesnoradio
@@ -175,7 +177,9 @@ css: |
   </style>
 ---
 question: |
-  Unterlagen
+  Unterlagen 
+subquestion: |
+  ${ lodas_file } 
 fields:   
   - Sozialversicherungsausweis: doc_soz_vers
     datatype: camera
@@ -194,7 +198,7 @@ fields:
     required: False
     show if:
       code: |
-        is_handicap == False
+        is_handicap == True
   - Studienbescheinigung: doc_study
     datatype: camera
     required: False
@@ -243,12 +247,12 @@ required: False
 ---
 event: final_an_2
 question: |
-  Danke 
+  ${ first_name } ${ last_name } - Danke für die Unterlagen
 subquestion: |
-  für die Beantwortung der Fragen und Unterlagen. Wir nehmen jetzt die Anmeldung vor.
-  E-Mail: ${ email_msg}
-  folgende Dateien wurden erstellt:
-  ${ attachements }
-  ${ form_as_json }
-  ${ send_res }
+  [FILE waiting, 100%]
+  
+  ${ kanzlei_email_template }
+  
+buttons:
+  - Exit: exit
 ---
