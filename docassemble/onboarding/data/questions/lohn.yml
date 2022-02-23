@@ -281,19 +281,19 @@ code: |
   an_signature
   
   attachements = []
-  if defined('doc_soz_vers'):
+  if defined('doc_soz_vers') and doc_soz_vers is not None:
     attachements.append(doc_soz_vers)
-  if defined('an_signature'):
+  if defined('an_signature') and an_signature is not None:
     attachements.append(an_signature)
-  if defined('doc_vwl'):
+  if defined('doc_vwl') and doc_vwl is not None:
     attachements.append(doc_vwl)    
-  if defined('doc_handicap'):
+  if defined('doc_handicap') and doc_handicap is not None:
     attachements.append(doc_handicap)    
-  if defined('doc_study'):
+  if defined('doc_study') and doc_study is not None:
     attachements.append(doc_study)    
-  if defined('doc_rv'):
+  if defined('doc_rv') and doc_rv is not None:
     attachements.append(doc_rv)       
-  if defined('doc_insurance'):
+  if defined('doc_insurance') and doc_insurance is not None:
     attachements.append(doc_insurance)
     
   attachements.append(test_form)
@@ -314,11 +314,11 @@ code: |
   #menu_items = [ {'url': 'https://docassemble.kanzlei-spaeth.de/interview?i=docassemble.playground4onboarding:settings.yml', 'label': 'Einstellungen'} ]
   
   #doc_soz_vers = None
-  doc_vwl = None
-  doc_handicap = None
-  doc_study = None
-  doc_rv = None
-  doc_insurance = None
+  #doc_vwl = None
+  #doc_handicap = None
+  #doc_study = None
+  #doc_rv = None
+  #doc_insurance = None
 
   
   

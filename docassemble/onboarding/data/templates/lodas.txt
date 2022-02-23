@@ -6,7 +6,6 @@ BeraterNr=${ showifdef('bnr') }
 MandantenNr=${ showifdef('mnr') }
 StammdatenGueltigAb=${ today() }
 
-
 [Satzbeschreibung]
  100; u_lod_psd_mitarbeiter;pnr#psd;duevo_familienname#psd;duevo_vorname#psd;gebname#psd;adresse_strassenname#psd;adresse_strasse_nr#psd;adresse_plz#psd;adresse_ort#psd;adresse_anschriftenzusatz#psd;adresse_plz_ausland#psd;
  101; u_lod_psd_mitarbeiter;pnr#psd;geburtsdatum_ttmmjj#psd;gebort#psd;geburtsland#psd;geschlecht#psd;sozialversicherung_nr#psd;staatsangehoerigkeit#psd;
@@ -21,27 +20,14 @@ StammdatenGueltigAb=${ today() }
  800; u_lod_psd_arbeitszeit_regelm;pnr#psd;az_wtl_indiv#psd;regelm_az_mo#psd;regelm_az_di#psd;regelm_az_mi#psd;regelm_az_do#psd;regelm_az_fr#psd;regelm_az_sa#psd;regelm_az_so#psd;
  801; u_lod_psd_arbeitszeit_regelm;pnr#psd;url_tage_jhrl#psd;
 
-[Satzbeschreibung]
- 100; u_lod_psd_mitarbeiter;pnr#psd;duevo_familienname#psd;duevo_vorname#psd;gebname#psd;adresse_strassenname#psd;adresse_strasse_nr#psd;adresse_plz#psd;adresse_ort#psd;adresse_anschriftenzusatz#psd;adresse_plz_ausland#psd;
- 101; u_lod_psd_mitarbeiter;pnr#psd;geburtsdatum_ttmmjj#psd;gebort#psd;geburtsland#psd;geschlecht#psd;sozialversicherung_nr#psd;staatsangehoerigkeit#psd;
- 102; u_lod_psd_ma_bank;ma_iban#psd;ma_bic#psd;
- 103; u_lod_psd_mitarbeiter;pnr#psd;schwerbeschaedigt#psd
- 200; u_lod_psd_mitarbeiter;pnr#psd;ersteintrittsdatum#psd;
- 201; u_lod_psd_beschaeftigung;pnr#psd;eintrittdatum#psd;
- 400; u_lod_psd_taetigkeit;pnr#psd;berufsbezeichnung#psd;ausg_taetigkeit#psd;schulabschluss#psd;ausbildungsabschluss#psd;arbeitnehmerueberlassung#psd;vertragsform#psd;
-% if defined('tax_id'):
- 702; u_lod_psd_steuer;pnr#psd;identifikationsnummer#psd;
-% endif
- 800; u_lod_psd_arbeitszeit_regelm;pnr#psd;az_wtl_indiv#psd;regelm_az_mo#psd;regelm_az_di#psd;regelm_az_mi#psd;regelm_az_do#psd;regelm_az_fr#psd;regelm_az_sa#psd;regelm_az_so#psd;
- 801; u_lod_psd_arbeitszeit_regelm;pnr#psd;url_tage_jhrl#psd;
 
 [Stammdaten]
 
- 100; ${ showifdef('pnr') }; ${ last_name };${first_name };${ showifdef('birth_name') };${ showifdef('street') };${ showifdef('street_no') };${ showifdef('zip') };${ showifdef('city') };;; [BR]
- 101; ${ showifdef('pnr') }; ${ showifdef('birth_date') };${ showifdef('birth_place') };${ showifdef('birth_country') };${ showifdef('gender') }, ${ showifdef('insurance_number') };${ showifdef('nationality') } [BR]
+ 100; ${ showifdef('pnr') }; ${ last_name };${first_name };${ showifdef('birth_name') };${ showifdef('street') };${ showifdef('street_no') };${ showifdef('zip') };${ showifdef('city') };;; 
+ 101; ${ showifdef('pnr') }; ${ f"{ birth_date :%d.%m.%Y }" if defined('birth_date') and birth_date is not None else '' };${ showifdef('birth_place') };${ showifdef('birth_country') };${ showifdef('gender') }, ${ showifdef('insurance_number') };${ showifdef('nationality') } 
  102; ${ showifdef('pnr') }; ${ showifdef('iban') };${ showifdef('bic') }
  
- 103; ${ showifdef('pnr') }; ${ showifdef('is_handicap') }
+ 103; ${ showifdef('pnr') }; ${ int(is_handicap) if defined('is_handicap') and is_handicap is not None else ''  }
  
  200; ${ showifdef('pnr') }; ${ f"{ first_entry :%d.%m.%Y }" }
  

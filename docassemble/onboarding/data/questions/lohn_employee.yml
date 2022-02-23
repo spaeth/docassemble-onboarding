@@ -178,8 +178,6 @@ css: |
 ---
 question: |
   Unterlagen 
-subquestion: |
-  ${ lodas_file } 
 fields:   
   - Sozialversicherungsausweis: doc_soz_vers
     datatype: camera
@@ -249,9 +247,8 @@ event: final_an_2
 question: |
   ${ first_name } ${ last_name } - Danke für die Unterlagen
 subquestion: |
+  Ihre Anmeldung wird jetzt vorgenommen.
   [FILE waiting, 100%]
-  
-  ${ kanzlei_email_template }
   
 buttons:
   - Exit: exit
