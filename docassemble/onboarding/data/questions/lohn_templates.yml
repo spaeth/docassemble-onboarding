@@ -21,8 +21,10 @@ attachment:
 attachment:
   name: LODAS Import Datei für ${ first_name } ${ last_name }
   filename: ${ first_name }_${ last_name }_json
-  raw: True
+  #raw: True
   content file: lodas_json.txt
+  #content: |
+  #  Hello tax world!
   variable name: lodas_json
 ---
 template: ag_email_template

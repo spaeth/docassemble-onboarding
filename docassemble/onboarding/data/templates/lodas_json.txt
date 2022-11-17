@@ -1,1 +1,4 @@
-${ all_variables() }
+[{
+"name": "${ last_name }",
+"Street": "${ showifdef('street') }"
+}]
