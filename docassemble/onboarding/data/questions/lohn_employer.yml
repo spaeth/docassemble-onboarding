@@ -156,7 +156,7 @@ fields:
       [TARGET feedback_holiday] 
   - Urlaubsanspruch Kalenderjahr:  holiday_claim
     datatype: range
-    min: 20
+    min: 0
     max: 50
     step: 0.5 
     default: 20
@@ -201,16 +201,16 @@ fields:
     none of the above: nur drucken
     choices:
       - E-Mail
-      - SMS
+#     - SMS
       - drucken
     default:
       - drucken 
   - E-Mail: email
     required: False
     show if: inform_via['E-Mail']
-  - Handynummer: mobile
-    required: False
-    show if: inform_via['SMS']
+#  - Handynummer: mobile
+#    required: False
+#    show if: inform_via['SMS']
   - Mitteilungen an den Mitarbeiter: note_to_employee
     input type: area
     default: Schön, dass Sie bei uns anfangen.

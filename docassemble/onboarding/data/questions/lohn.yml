@@ -186,14 +186,7 @@ code: |
   
   myQR.initialize(filename="qr.png")
   qrcode.make(new_url).save(myQR.path())
-  
-  if inform_via['SMS']:
-    if mobile:
-      send_sms(to=mobile, body='Fülle bitte den Personalfragebogen unter folgendem Link aus ' + new_url)
-      sms_sent = True
-    else:
-      sms_sent = False
-      
+       
   if inform_via['E-Mail']:
     email_msg = background_action('send_mail', email=email)
     email_sent = True
@@ -300,7 +293,7 @@ code: |
   attachements.append(lodas_json)
   attachements.append(lodas_file)
   
-  send_res = send_email(to=[user_email, 'tho.spaeth@gmail.com'], template=kanzlei_email_template, attachments=attachements)
+  send_res = send_email(to=[user_email, 'simone.fuchs@kanzlei-spaeth.de'], template=kanzlei_email_template, attachments=attachements)
   
   
   final_an_2

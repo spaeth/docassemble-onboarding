@@ -1,5 +1,8 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
+0.2:
+- div. changes for simone
+
 0.1:
 - fixes for hans
 

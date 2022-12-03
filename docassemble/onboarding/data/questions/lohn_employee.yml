@@ -4,7 +4,7 @@ question: |
 subquestion: |
   ${ note_to_employee }
 
-  Bitte kontrolliere die vorausgefüllten Daten und beantworte die Fragen.
+  Bitte kontrollieren Sie vorausgefüllten Daten und beantworten die Fragen.
   <input type="hidden"
     name="${ encode_name('user_email') }"
     value=${ json.dumps(user_email) }>
@@ -14,7 +14,7 @@ fields:
   - Nachname: last_name
     required: True
   - Geburtsname: birth_name
-    required: False
+    required: True
   - Geburtsdatum: birth_date
     datatype: date 
     required: True
@@ -26,27 +26,27 @@ fields:
     required: do_require_fields  
   - Stadt: city
     required: do_require_fields
-  - "Haben Sie eine *deutsche* Sozialversicherungskarte?": is_insurance_number
-    datatype: yesnoradio
-    default: True
-    required: do_require_fields    
-  - Sozialversicherungsnummer: insurance_number
-    help: |
-      https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Allgemeine-Informationen/Sozialversicherungsausweis/sozialversicherungsausweis_node.html
-    required: do_require_fields  
-    validate: |
-      lambda y: True if (len(y)==12 or len(y)==0) else validation_error("Es handelt sich um keine deutsche Sozialversicherungsnummer.")      
-    show if: is_insurance_number
+#  - "Haben Sie eine *deutsche* Sozialversicherungskarte?": is_insurance_number
+#    datatype: yesnoradio
+#    default: True
+#    required: do_require_fields    
+#  - Sozialversicherungsnummer: insurance_number
+#    help: |
+#    https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Allgemeine-#Informationen/Sozialversicherungsausweis/sozialversicherungsausweis_node.html
+#    required: do_require_fields  
+#    validate: |
+#      lambda y: True if (len(y)==12 or len(y)==0) else validation_error("Es handelt sich um keine #deutsche Sozialversicherungsnummer.")      
+#    show if: is_insurance_number
   - Geburtsort: birth_place
     required: do_require_fields
-    show if:
-      variable: is_insurance_number
-      is: False
+#    show if:
+#      variable: is_insurance_number
+#      is: False
   - Geburtsland: birth_country
     required: do_require_fields
     code: countries_list()
     default: DE
-    hide if: is_insurance_number
+#    hide if: is_insurance_number
   - Geschlecht: gender
     datatype: radio
     required: do_require_fields    
@@ -55,16 +55,24 @@ fields:
       - weiblich: 1
       - männlich: 0
       - divers: 2
-      - undefiniert: 3
+      - unbestimmt: 3
   - Staatsangehörigkeit: nationality
     # 4214 Nationalitätenschlüssel Lohn
     input type: combobox
     code: myoptions
-    required: do_require_fields   
+    required: do_require_fields  
+  - Lohn-/Gehaltszahlung: salary_payment
+    datatype: radio
+    choices:
+      - Barauszahlung
+      - Banküberweisung
+    default: Banküberweisung
   - IBAN: iban
     required: do_require_fields  
-  - BIC: bic
-    required: do_require_fields      
+    js show if: |
+      (val('salary_payment') == 'Banküberweisung')
+#  - BIC: bic
+#    required: do_require_fields      
   - Höchster Schulabschluss: graduation
     required: do_require_fields  
     choices: 
@@ -103,8 +111,11 @@ fields:
     - V
     - VI
     required: do_require_fields
-  - Faktor: tax_factor
-    required: False
+    show if:
+      code: |
+        contract_type != 'Minijob'    
+#  - Faktor: tax_factor
+#    required: False
   - Kinderfreibetrag: tax_child_allowance
     required: do_require_fields
     default: 0
@@ -136,7 +147,7 @@ fields:
     - jüdische Kultussteuer (ih): ih
     - jüdische Kultussteuer (jd): jd
     default: rk
-    required: True
+    required: False
     js show if: |
       val('is_church')
   - note: |
@@ -182,9 +193,9 @@ fields:
   - Sozialversicherungsausweis: doc_soz_vers
     datatype: camera
     required: False
-    show if:
-      code: |
-        is_insurance_number == True
+#    show if:
+#      code: |
+#        is_insurance_number == True
   - VWL-Vertrag: doc_vwl
     datatype: camera
     required: False

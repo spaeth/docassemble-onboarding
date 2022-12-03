@@ -9,6 +9,9 @@ metadata:
   authors:
     - name: Dr. Thomas Späth
       organization: Kanzlei Späth KG StBG
+  required priviliges:
+    - admin
+    - user
   revision_date: 2022-02-10
   tags:
     - lohn
