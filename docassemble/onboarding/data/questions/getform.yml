@@ -35,7 +35,7 @@ code: |
 ---
 question: Result of question
 subquestion: |
-  URL: ${ url_from_code } [BR]
+  URL: ${ get_url_from_code } [BR]
   Code: ${ key } [BR]
   <a class="btn btn-primary" href="${ url_from_code }" role="button">Fragebogen ausfüllen</a>
 

@@ -133,8 +133,8 @@ code: |
     # Eigenschaften des Mandanten
     logo = company_logo
     company_name = preferences.company_name if hasattr(preferences, 'company_name') else ''
-    bnr = preferences.company_name if hasattr(preferences, 'bnr') else 0
-    mnr = preferences.company_name if hasattr(preferences, 'mnr') else 0
+    bnr = preferences.bnr if hasattr(preferences, 'bnr') else 0
+    mnr = preferences.mnr if hasattr(preferences, 'mnr') else 0
     
     
     welcome_text = preferences.welcome_text if hasattr(preferences, 'welcome_text') else ''

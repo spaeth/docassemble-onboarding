@@ -1,5 +1,11 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
+
+0.3:
+- missing MandantenNr/BeraterNR in Lodasfile
+- change logo file
+- opening interview with code fixed
+
 0.2:
 - div. changes for simone
 
