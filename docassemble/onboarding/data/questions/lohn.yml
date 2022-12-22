@@ -295,11 +295,13 @@ code: |
   
   send_res = send_email(to=[user_email, 'simone.fuchs@kanzlei-spaeth.de'], template=kanzlei_email_template, attachments=attachements)
   
-  
-  final_an_2
-  
+
+  #final_an_2
+  command('exit', url="https://kanzlei-spaeth.de/danke-fur-die-unterlagen")
 
 ---
+
+
 mandatory: True
 code: |
   multi_user = True

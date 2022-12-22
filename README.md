@@ -1,6 +1,10 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
 
+0.4:
+- made sure exit is called after interview finished
+- redirect to https://kanzlei-spaeth.de/danke-fur-die-unterlagen
+
 0.3:
 - missing MandantenNr/BeraterNR in Lodasfile
 - change logo file

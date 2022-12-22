@@ -260,7 +260,6 @@ question: |
 subquestion: |
   Ihre Anmeldung wird jetzt vorgenommen.
   [FILE waiting, 100%]
-  
 buttons:
   - Exit: exit
 ---
