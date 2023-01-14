@@ -205,9 +205,9 @@ fields:
       - drucken
     default:
       - drucken 
-  - E-Mail: email
-    required: False
-    show if: inform_via['E-Mail']
+#  - E-Mail: email
+#    required: False
+#    show if: inform_via['E-Mail']
 #  - Handynummer: mobile
 #    required: False
 #    show if: inform_via['SMS']
@@ -220,7 +220,7 @@ fields:
     choices:
     - Deutsch: de
     - Englisch: en
-    - Romänisch: ro
+    - Rumänisch: ro
     default: de
 
 section: employee

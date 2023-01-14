@@ -1,6 +1,9 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
 
+0.7:
+- bugfix, changend logo
+
 0.6:
 - changed invite_employee_de.docx from Du to Sie
 

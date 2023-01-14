@@ -187,12 +187,12 @@ code: |
   myQR.initialize(filename="qr.png")
   qrcode.make(new_url).save(myQR.path())
        
-  if inform_via['E-Mail']:
-    email_msg = background_action('send_mail', email=email)
-    email_sent = True
-  else:
-    email_msg = None
-    email_sent = False      
+#if inform_via['E-Mail']:
+#email_msg = background_action('send_mail', email=email)
+#email_sent = True
+#else:
+#email_msg = None
+#email_sent = False      
       
 
 ---
