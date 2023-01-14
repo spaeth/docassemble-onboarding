@@ -1,6 +1,9 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
 
+0.6:
+- changed invite_employee_de.docx from Du to Sie
+
 0.5:
 - removed possible email notification for employee, should be sent by client with their own logo from their email-adress
 
