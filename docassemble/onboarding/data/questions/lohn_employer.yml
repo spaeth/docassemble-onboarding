@@ -200,7 +200,7 @@ fields:
     datatype: checkboxes
     none of the above: nur drucken
     choices:
-      - E-Mail
+#     - E-Mail
 #     - SMS
       - drucken
     default:
