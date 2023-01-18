@@ -22,7 +22,7 @@ fields:
     required: do_require_fields  
   - Hausnr.: street_no
     required: do_require_fields  
-  - Postleitzahl: zip
+  - Postleitzahl: zip_no
     required: do_require_fields  
   - Stadt: city
     required: do_require_fields

@@ -1,6 +1,9 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
 
+0.8:
+- problems mit lodas.txt template. Still unsolved
+
 0.7:
 - bugfix, changend logo
 
