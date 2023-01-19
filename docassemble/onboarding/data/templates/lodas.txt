@@ -1,35 +1,35 @@
-[Allgemein]
-Ziel=LODAS
-BeraterNr=${ showifdef('bnr') }
-MandantenNr=${ showifdef('mnr') }
-StammdatenGueltigAb=${ f"{ first_entry :%d.%m.%Y }" }
-
-
-[Satzbeschreibung]
-100; u_lod_psd_mitarbeiter;pnr#psd;duevo_familienname#psd;duevo_vorname#psd;gebname#psd;adresse_strassenname#psd;adresse_strasse_nr#psd;adresse_plz#psd;adresse_ort#psd;adresse_anschriftenzusatz#psd;adresse_plz_ausland#psd;
-101; u_lod_psd_mitarbeiter;pnr#psd;geburtsdatum_ttmmjj#psd;gebort#psd;geburtsland#psd;geschlecht#psd;sozialversicherung_nr#psd;staatsangehoerigkeit#psd;
-102; u_lod_psd_ma_bank;ma_iban#psd;ma_bic#psd;
-103; u_lod_psd_mitarbeiter;pnr#psd;schwerbeschaedigt#psd
-200; u_lod_psd_mitarbeiter;pnr#psd;ersteintrittsdatum#psd;
-201; u_lod_psd_beschaeftigung;pnr#psd;eintrittdatum#psd;
-400; u_lod_psd_taetigkeit;pnr#psd;berufsbezeichnung#psd;ausg_taetigkeit#psd;schulabschluss#psd;ausbildungsabschluss#psd;arbeitnehmerueberlassung#psd;vertragsform#psd;
+[Allgemein]\r\n
+Ziel=LODAS\r\n
+BeraterNr=${ showifdef('bnr') }\r\n
+MandantenNr=${ showifdef('mnr') }\r\n
+StammdatenGueltigAb=${ f"{ first_entry :%d.%m.%Y }" }\r\n
+\r\n
+\r\n
+[Satzbeschreibung]\r\n
+100; u_lod_psd_mitarbeiter;pnr#psd;duevo_familienname#psd;duevo_vorname#psd;gebname#psd;adresse_strassenname#psd;adresse_strasse_nr#psd;adresse_plz#psd;adresse_ort#psd;adresse_anschriftenzusatz#psd;adresse_plz_ausland#psd;\r\n
+101; u_lod_psd_mitarbeiter;pnr#psd;geburtsdatum_ttmmjj#psd;gebort#psd;geburtsland#psd;geschlecht#psd;sozialversicherung_nr#psd;staatsangehoerigkeit#psd;\r\n
+102; u_lod_psd_ma_bank;ma_iban#psd;ma_bic#psd;\r\n
+103; u_lod_psd_mitarbeiter;pnr#psd;schwerbeschaedigt#psd\r\n
+200; u_lod_psd_mitarbeiter;pnr#psd;ersteintrittsdatum#psd;\r\n
+201; u_lod_psd_beschaeftigung;pnr#psd;eintrittdatum#psd;\r\n
+400; u_lod_psd_taetigkeit;pnr#psd;berufsbezeichnung#psd;ausg_taetigkeit#psd;schulabschluss#psd;ausbildungsabschluss#psd;arbeitnehmerueberlassung#psd;vertragsform#psd;\r\n
 % if defined('tax_id'):
-702; u_lod_psd_steuer;pnr#psd;identifikationsnummer#psd;
+702; u_lod_psd_steuer;pnr#psd;identifikationsnummer#psd;\r\n
 % endif
-800; u_lod_psd_arbeitszeit_regelm;pnr#psd;az_wtl_indiv#psd;regelm_az_mo#psd;regelm_az_di#psd;regelm_az_mi#psd;regelm_az_do#psd;regelm_az_fr#psd;regelm_az_sa#psd;regelm_az_so#psd;
-801; u_lod_psd_arbeitszeit_regelm;pnr#psd;url_tage_jhrl#psd;
-
-
-[Stammdaten]
-100; ${ showifdef('pnr') }; ${ last_name };${first_name };${ showifdef('birth_name') };${ showifdef('street') };${ showifdef('street_no') };${ showifdef('zip_no') };${ showifdef('city') };;;
-101; ${ showifdef('pnr') }; ${ f"{ birth_date :%d.%m.%Y }" if defined('birth_date') and birth_date is not None else '' };${ showifdef('birth_place') };${ showifdef('birth_country') };${ showifdef('gender') }, ${ showifdef('insurance_number') };${ showifdef('nationality') }
-102; ${ showifdef('pnr') }; ${ showifdef('iban') };${ showifdef('bic') }
-103; ${ showifdef('pnr') }; ${ int(is_handicap) if defined('is_handicap') and is_handicap is not None else ''  }
-200; ${ showifdef('pnr') }; ${ f"{ first_entry :%d.%m.%Y }" }
-201; ${ showifdef('pnr') }; ${ f"{ first_entry :%d.%m.%Y }" }
-400; ${ showifdef('pnr') }; ${ showifdef('job') };;${ showifdef('graduation') };${ showifdef('training') };;${ showifdef('contract_type') };
+800; u_lod_psd_arbeitszeit_regelm;pnr#psd;az_wtl_indiv#psd;regelm_az_mo#psd;regelm_az_di#psd;regelm_az_mi#psd;regelm_az_do#psd;regelm_az_fr#psd;regelm_az_sa#psd;regelm_az_so#psd;\r\n
+801; u_lod_psd_arbeitszeit_regelm;pnr#psd;url_tage_jhrl#psd;\r\n
+\r\n
+\r\n
+[Stammdaten]\r\n
+100; ${ showifdef('pnr') }; ${ last_name };${first_name };${ showifdef('birth_name') };${ showifdef('street') };${ showifdef('street_no') };${ showifdef('zip_no') };${ showifdef('city') };;;\r\n
+101; ${ showifdef('pnr') }; ${ f"{ birth_date :%d.%m.%Y }" if defined('birth_date') and birth_date is not None else '' };${ showifdef('birth_place') };${ showifdef('birth_country') };${ showifdef('gender') }, ${ showifdef('insurance_number') };${ showifdef('nationality') }\r\n
+102; ${ showifdef('pnr') }; ${ showifdef('iban') };${ showifdef('bic') }\r\n
+103; ${ showifdef('pnr') }; ${ int(is_handicap) if defined('is_handicap') and is_handicap is not None else ''  }\r\n
+200; ${ showifdef('pnr') }; ${ f"{ first_entry :%d.%m.%Y }" }\r\n
+201; ${ showifdef('pnr') }; ${ f"{ first_entry :%d.%m.%Y }" }\r\n
+400; ${ showifdef('pnr') }; ${ showifdef('job') };;${ showifdef('graduation') };${ showifdef('training') };;${ showifdef('contract_type') };\r\n
 % if defined('tax_id'):
-702; ${ showifdef('pnr') }; ${ showifdef('tax_id') }
+702; ${ showifdef('pnr') }; ${ showifdef('tax_id') }\r\n
 % endif
-800; ${ showifdef('pnr') }; ${ showifdef('weekly_working_time_in_h') };${ showifdef('mo_h') };${ showifdef('di_h') };${ showifdef('mi_h') };${ showifdef('do_h') };${ showifdef('fr_h') };${ showifdef('sa_h') };${ showifdef('so_h') };
-801; ${ showifdef('pnr') }; ${ showifdef('holiday_claim') }
+800; ${ showifdef('pnr') }; ${ showifdef('weekly_working_time_in_h') };${ showifdef('mo_h') };${ showifdef('di_h') };${ showifdef('mi_h') };${ showifdef('do_h') };${ showifdef('fr_h') };${ showifdef('sa_h') };${ showifdef('so_h') };\r\n
+801; ${ showifdef('pnr') }; ${ showifdef('holiday_claim') }\r\n
