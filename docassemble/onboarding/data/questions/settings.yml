@@ -39,7 +39,7 @@ fields:
   - Unternehmensname: preferences.company_name
   - Mandantennummer: preferences.mnr
   - Beraternummer: preferences.bnr
-  - Zähler Personalnummer: preferences.pnr
+#  - Zähler Personalnummer: preferences.pnr
   - Benutzerdefinierte Satz: preferences.welcome_text
     input type: area
     required: False

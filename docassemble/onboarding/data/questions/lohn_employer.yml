@@ -189,7 +189,9 @@ fields:
   - "Pflichtfelder einfordern": do_require_fields
     datatype: yesnoradio
     default: True   
-    
+  
+  - Personalnummer: personal_nummer
+    required: True
   - Vorname: first_name
     show if: input_by_employee  
   - Nachname: last_name

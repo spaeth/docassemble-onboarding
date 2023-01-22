@@ -1,6 +1,10 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
 
+0.9:
+- modified lodas.txt
+- moved Personalnummer from Stammdaten to Neueinstellung
+
 0.8:
 - problems mit lodas.txt template. Still unsolved
 
