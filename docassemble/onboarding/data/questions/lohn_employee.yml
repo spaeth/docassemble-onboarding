@@ -44,7 +44,7 @@ fields:
 #      is: False
   - Geburtsland: birth_country
     required: do_require_fields
-    code: countries_list()
+    code: myoptions
     default: DE
 #    hide if: is_insurance_number
   - Geschlecht: gender

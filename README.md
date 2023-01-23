@@ -1,6 +1,9 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
 
+1.0:
+- countries where exported for lodas with country-code (e. g. DE), but needed to be exported with ID
+
 0.9:
 - modified lodas.txt
 - moved Personalnummer from Stammdaten to Neueinstellung
