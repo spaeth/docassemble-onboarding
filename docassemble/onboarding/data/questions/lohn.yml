@@ -135,7 +135,7 @@ code: |
     company_name = preferences.company_name if hasattr(preferences, 'company_name') else ''
     bnr = preferences.bnr if hasattr(preferences, 'bnr') else 0
     mnr = preferences.mnr if hasattr(preferences, 'mnr') else 0
-    
+    company_email = preferences.company_email if hasattr(preferences, 'company_email') else 'simone.fuchs@kanzlei-spaeth.de'
     
     welcome_text = preferences.welcome_text if hasattr(preferences, 'welcome_text') else ''
     #job_list = preferences.job_list if hasattr(preferences, 'job_list') else []
@@ -290,10 +290,11 @@ code: |
     attachements.append(doc_insurance)
     
   attachements.append(test_form)
-  attachements.append(lodas_json)
+  #attachements.append(lodas_json)
   attachements.append(lodas_file)
   
-  send_res = send_email(to=[user_email, 'simone.fuchs@kanzlei-spaeth.de'], template=kanzlei_email_template, attachments=attachements)
+  #send_res = send_email(to=[user_email, 'simone.fuchs@kanzlei-spaeth.de'], 
+  send_res = send_email(to=[company_email], template=kanzlei_email_template, attachments=attachements)
   
 
   #final_an_2

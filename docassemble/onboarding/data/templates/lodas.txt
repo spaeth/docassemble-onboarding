@@ -20,7 +20,7 @@ ${"\r\n"}
 ${"\r\n"}
 [Stammdaten]${"\r\n"}
 100; ${ personal_nummer }; ${ last_name };${first_name };${ showifdef('birth_name') };${ showifdef('street') };${ showifdef('street_no') };${ showifdef('zip_no') };${ showifdef('city') };;;${"\r\n"}
-101; ${ personal_nummer }; ${ f"{ birth_date :%d.%m.%Y }" if defined('birth_date') and birth_date is not None else '' };${ showifdef('birth_place') };${ showifdef('birth_country') };${ showifdef('gender') }, ${ showifdef('insurance_number') };${ showifdef('nationality') }${"\r\n"}
+101; ${ personal_nummer }; ${ f"{ birth_date :%d.%m.%Y }" if defined('birth_date') and birth_date is not None else '' };${ showifdef('birth_place') };${ showifdef('birth_country') };${ showifdef('gender') }; ${ showifdef('insurance_number') };${ showifdef('nationality') }${"\r\n"}
 102; ${ personal_nummer }; ${ showifdef('iban') };${ showifdef('bic') }${"\r\n"}
 103; ${ personal_nummer }; ${ int(is_handicap) if defined('is_handicap') and is_handicap is not None else ''  }${"\r\n"}
 200; ${ personal_nummer }; ${ f"{ first_entry :%d.%m.%Y }" }${"\r\n"}

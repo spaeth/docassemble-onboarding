@@ -76,22 +76,23 @@ fields:
   - Höchster Schulabschluss: graduation
     required: do_require_fields  
     choices: 
-      - ohne Schulabschluss
-      - Haupt-/Volksschulabschluss
-      - Mittlere Reife oder gleichwertiger Abschluss
-      - Abitur/ Fachabitur
-      - Abschluss unbekannt
+      - keine Angabe : 0
+      - ohne Schulabschluss : 1
+      - Haupt-/Volksschulabschluss : 2
+      - Mittlere Reife oder gleichwertiger Abschluss : 3
+      - Abitur/ Fachabitur : 4
+      - Abschluss unbekannt : 9
   - Höchste Berufsausbildung: training
     required: do_require_fields  
     choices:
-      - Ohne beruflichen Ausbildungsabschluss
-      - Abschluss einer anerkannten Berufsausbildung
-      - Meister/ Techniker oder gleichwertiger Fachschulabschluss
-      - Bachelor
-      - Master
-      - Diplom/ Magister/ Master/ Staatsexamen
-      - Promotion
-      - Abschluss unbekannt
+      - keine Angabe : 0
+      - Ohne beruflichen Ausbildungsabschluss : 1
+      - Abschluss einer anerkannten Berufsausbildung : 2
+      - Meister-/Techniker - oder gleichwertiger Fachschulabschluss : 3
+      - Bachelor : 4
+      - Diplom/Magister/Master/Staatsexamen : 5
+      - Promotion : 6
+      - Abschluss unbekannt : 9
   - "Steuer-Identifikationsnummer": tax_id
     required: do_require_fields
     show if: 

@@ -39,6 +39,9 @@ fields:
   - Unternehmensname: preferences.company_name
   - Mandantennummer: preferences.mnr
   - Beraternummer: preferences.bnr
+  - E-Mail: preferences.company_email
+    help: |
+      An diese Adresse werden die Daten des neuen Mitarbeiters geschickt.
 #  - Zähler Personalnummer: preferences.pnr
   - Benutzerdefinierte Satz: preferences.welcome_text
     input type: area
