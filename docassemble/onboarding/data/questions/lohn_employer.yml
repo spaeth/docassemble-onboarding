@@ -196,6 +196,14 @@ fields:
     show if: input_by_employee  
   - Nachname: last_name
     show if: input_by_employee
+  - Straße: street
+    show if: input_by_employee
+  - Hausnr.: street_no
+    show if: input_by_employee
+  - Postleitzahl: zip_no
+    show if: input_by_employee
+  - Stadt: city
+    show if: input_by_employee
   - "Benachrichtigen über ...": inform_via
     required: True
     show if: input_by_employee
