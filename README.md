@@ -1,6 +1,9 @@
 #on-boarding.tax-bot
 This ist an interview with docassemble for on-boarding employees in client-companies. 
 
+1.2:
+- Vollzeit/Teilzeit, text changed
+
 1.1:
 - email address, to which the new employees data is sent, can now be configured
 

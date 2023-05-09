@@ -47,7 +47,7 @@ fields:
       - Unbefristet Vollzeit : 1
       - Unbefristet Teilzeit : 2
       - Befristet Vollzeit : 3
-      - Befristet Vollzeit : 4
+      - Befristet Teilzeit : 4
     help: |
       Kurzfristige Beschäfigungen sind Beschäftigungen unter ..... Vgl. auch Jahresübersicht XXX.
   - Das Arbeitsverhältnis ist befristet: is_limit
